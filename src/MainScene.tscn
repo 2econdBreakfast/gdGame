@@ -1,0 +1,99 @@
+[gd_scene load_steps=10 format=3 uid="uid://ct4y62u26mkhu"]
+
+[ext_resource type="TileSet" uid="uid://dmxk6mov2niyb" path="res://src/World/MapGen/tilesets/TerrainTileSet.tres" id="1_ril2f"]
+[ext_resource type="TileSet" uid="uid://b3cv5516t3sy3" path="res://src/World/MapGen/tilesets/DestructibleTileset.tres" id="2_5muue"]
+[ext_resource type="PackedScene" uid="uid://do3s8f6e077gw" path="res://src/NPC/Nodes/Bunny.tscn" id="3_n7eg7"]
+[ext_resource type="PackedScene" uid="uid://dn8ptif88wr4i" path="res://src/Camera/camera.tscn" id="4_oj0n0"]
+[ext_resource type="PackedScene" uid="uid://d34a52kj5ljdd" path="res://src/Player/Player.tscn" id="5_3i34d"]
+[ext_resource type="PackedScene" uid="uid://bnqrolr6i6i47" path="res://src/World/Buildings/cabin.tscn" id="6_t6a7w"]
+[ext_resource type="Script" path="res://src/World/MapGen/src/NavigationManager.gd" id="7_pheqc"]
+[ext_resource type="Script" path="res://src/World/MapGen/src/MapGenerator.gd" id="8_h6k4b"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_xogl4"]
+source_geometry_group_name = &"navigation_polygon_source_group"
+
+[node name="World" type="Node2D"]
+
+[node name="YSorted" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Tilemaps" type="Node2D" parent="YSorted"]
+y_sort_enabled = true
+
+[node name="TerrainTilemap" type="TileMap" parent="YSorted/Tilemaps"]
+z_index = -2
+texture_filter = 1
+tile_set = ExtResource("1_ril2f")
+rendering_quadrant_size = 32
+format = 2
+layer_0/name = "Terrain"
+layer_0/navigation_enabled = false
+
+[node name="DestructibleTilemap" type="TileMap" parent="YSorted/Tilemaps"]
+light_mask = 2
+visibility_layer = 2
+y_sort_enabled = true
+tile_set = ExtResource("2_5muue")
+rendering_quadrant_size = 32
+format = 2
+layer_0/name = "Trees"
+layer_0/y_sort_enabled = true
+layer_0/navigation_enabled = false
+
+[node name="Actors" type="Node2D" parent="YSorted"]
+
+[node name="Player" parent="YSorted/Actors" instance=ExtResource("5_3i34d")]
+
+[node name="NPCContainer" type="Node2D" parent="YSorted/Actors"]
+
+[node name="Bunny" parent="YSorted/Actors/NPCContainer" instance=ExtResource("3_n7eg7")]
+top_level = true
+position = Vector2(76, 23)
+collision_layer = 0
+collision_mask = 0
+
+[node name="AnimatedSprite2D" parent="YSorted/Actors/NPCContainer/Bunny" index="0"]
+animation = &"move_right"
+
+[node name="NPCNavigator" parent="YSorted/Actors/NPCContainer/Bunny" index="2"]
+target_desired_distance = 20.0
+navigation_layers = 1
+avoidance_layers = 0
+avoidance_mask = 7
+
+[node name="NPCData" parent="YSorted/Actors/NPCContainer/Bunny" index="5"]
+move_range = 200.0
+
+[node name="BehaviorTree" parent="YSorted/Actors/NPCContainer/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
+blackboard = NodePath("@Node@47590")
+
+[node name="InitializeIdleTimer" parent="YSorted/Actors/NPCContainer/Bunny/BehaviorTree/Main" index="0"]
+max_ticks = 250
+
+[node name="Camera2D" parent="YSorted/Actors/NPCContainer/Bunny" instance=ExtResource("4_oj0n0")]
+
+[node name="BuildingContainer" type="Node2D" parent="YSorted"]
+
+[node name="Cabin" parent="YSorted/BuildingContainer" instance=ExtResource("6_t6a7w")]
+position = Vector2(479, 600)
+
+[node name="NavigationObstacle2D" parent="YSorted/BuildingContainer/Cabin" index="5"]
+process_mode = 4
+visible = true
+avoidance_enabled = false
+
+[node name="Scripts" type="Node" parent="."]
+
+[node name="TilemapNavigationManager" type="NavigationRegion2D" parent="Scripts"]
+top_level = true
+navigation_polygon = SubResource("NavigationPolygon_xogl4")
+script = ExtResource("7_pheqc")
+
+[node name="MapGenerator" type="Node2D" parent="Scripts"]
+script = ExtResource("8_h6k4b")
+
+[connection signal="velocity_computed" from="YSorted/Actors/NPCContainer/Bunny/NPCNavigator" to="YSorted/Actors/NPCContainer/Bunny" method="_on_npc_navigator_velocity_computed"]
+[connection signal="timeout" from="YSorted/Actors/NPCContainer/Bunny/NPCNavigator/path_recalculation_timer" to="YSorted/Actors/NPCContainer/Bunny/NPCNavigator" method="_on_recalculation_timer_timeout"]
+
+[editable path="YSorted/Actors/NPCContainer/Bunny"]
+[editable path="YSorted/BuildingContainer/Cabin"]

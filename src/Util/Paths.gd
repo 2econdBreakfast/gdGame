@@ -6,10 +6,10 @@ const util_dir = src_dir + "Util/"
 const enums = util_dir + "Enums.gd"
 
 # scene paths
-const ysorted = "/root/YSorted/"
+const ysorted = "/root/World/YSorted/"
 const tilemaps = ysorted + "Tilemaps/"
 const actors = ysorted + "Actors/"
-const buildings = ysorted + "Buildings/"
+const buildings = ysorted + "BuildingContainer/"
 const scripts = "/root/Scripts/"
 
 # specific nodes
