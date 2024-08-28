@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=3 uid="uid://bnqrolr6i6i47"]
+
+[ext_resource type="Texture2D" uid="uid://c0dx0ga7gmjiv" path="res://World/src/Buildings/assets/cabin_interior.png" id="1_3jhwi"]
+[ext_resource type="Script" path="res://World/src/Buildings/src/Building.gd" id="1_sxtgj"]
+[ext_resource type="Texture2D" uid="uid://lcl8b16jf4yd" path="res://World/src/Buildings/assets/cabin_exterior.png" id="2_ohreh"]
+[ext_resource type="SpriteFrames" uid="uid://5j2jjga4gia1" path="res://World/src/Buildings/assets/cabin_door_anim.tres" id="3_a55k0"]
+[ext_resource type="Script" path="res://World/src/Buildings/src/Door.gd" id="4_7abu2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jwsbk"]
+radius = 140.129
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_iiby5"]
+friction = 0.0
+
+[node name="Cabin" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_sxtgj")
+
+[node name="InteriorArea2D" type="Area2D" parent="."]
+position = Vector2(-92, 474)
+collision_layer = 23
+collision_mask = 7
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InteriorArea2D"]
+position = Vector2(89, -257)
+polygon = PackedVector2Array(-311, 259, -311, -271, 313, -271, 313, 255)
+
+[node name="InteriorSprite" type="Sprite2D" parent="."]
+z_index = -1
+y_sort_enabled = true
+texture = ExtResource("1_3jhwi")
+
+[node name="ExteriorSprite" type="Sprite2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0, 475)
+texture = ExtResource("2_ohreh")
+offset = Vector2(0, -475)
+
+[node name="Door" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(-92, 474)
+script = ExtResource("4_7abu2")
+
+[node name="DoorDetectionZone" type="Area2D" parent="Door"]
+y_sort_enabled = true
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door/DoorDetectionZone"]
+y_sort_enabled = true
+position = Vector2(-2, -46)
+shape = SubResource("CircleShape2D_jwsbk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Door"]
+y_sort_enabled = true
+sprite_frames = ExtResource("3_a55k0")
+animation = &"opening"
+offset = Vector2(0, -95)
+
+[node name="WallStaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_iiby5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WallStaticBody2D"]
+polygon = PackedVector2Array(-36, 476, 310, 476, 310, -52, -312, -52, -314, 476, -136, 476, -136, 460, -304, 460, -304, -46, 300, -46, 300, 460, -36, 460)
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+position = Vector2(0, 134.985)
+radius = 500.0
+avoidance_layers = 2
+
+[connection signal="body_entered" from="InteriorArea2D" to="." method="_on_interior_area_2d_body_entered"]
+[connection signal="body_exited" from="InteriorArea2D" to="." method="_on_interior_area_2d_body_exited"]

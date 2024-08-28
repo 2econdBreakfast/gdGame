@@ -1,0 +1,97 @@
+[gd_scene load_steps=8 format=3 uid="uid://ct4y62u26mkhu"]
+
+[ext_resource type="PackedScene" uid="uid://do3s8f6e077gw" path="res://NPC/Nodes/Bunny.tscn" id="3_4afe2"]
+[ext_resource type="PackedScene" uid="uid://cb5i0x0mu2ped" path="res://World/map.tscn" id="4_djawh"]
+[ext_resource type="PackedScene" uid="uid://dn8ptif88wr4i" path="res://Camera/camera.tscn" id="4_pqkds"]
+[ext_resource type="PackedScene" uid="uid://d34a52kj5ljdd" path="res://Player/Player.tscn" id="5_7n5o5"]
+[ext_resource type="Script" path="res://World/src/TreeInstantiator.gd" id="5_dl7bp"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ikqcb"]
+noise_type = 3
+frequency = 0.0151
+fractal_octaves = 1
+fractal_gain = 2.805
+fractal_weighted_strength = 1.0
+fractal_ping_pong_strength = 2.145
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 12.6
+domain_warp_frequency = -0.11
+domain_warp_fractal_octaves = 2
+domain_warp_fractal_lacunarity = 0.185
+domain_warp_fractal_gain = 7.49
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8bupj"]
+noise_type = 3
+frequency = 0.0118
+fractal_octaves = 2
+fractal_lacunarity = 1.0
+fractal_gain = 1.54
+fractal_weighted_strength = 1.0
+
+[node name="World" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Actors" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="NPCs" type="Node2D" parent="Actors"]
+y_sort_enabled = true
+
+[node name="Bunny" parent="Actors/NPCs" instance=ExtResource("3_4afe2")]
+position = Vector2(615, 446)
+collision_layer = 0
+collision_mask = 0
+
+[node name="AnimatedSprite2D" parent="Actors/NPCs/Bunny" index="0"]
+animation = &"move_right"
+
+[node name="NPCNavigator" parent="Actors/NPCs/Bunny" index="2"]
+target_desired_distance = 20.0
+navigation_layers = 1
+avoidance_layers = 0
+avoidance_mask = 7
+debug_enabled = true
+
+[node name="NPCData" parent="Actors/NPCs/Bunny" index="5"]
+move_range = 200.0
+
+[node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
+blackboard = NodePath("@Node@17605")
+
+[node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
+max_ticks = 250
+
+[node name="Camera2D" parent="Actors/NPCs/Bunny" instance=ExtResource("4_pqkds")]
+y_sort_enabled = true
+
+[node name="Player" parent="Actors" instance=ExtResource("5_7n5o5")]
+
+[node name="Map" parent="." instance=ExtResource("4_djawh")]
+y_sort_enabled = true
+
+[node name="MapGenerator" parent="Map" index="0" node_paths=PackedStringArray("instantiator_modules")]
+instantiator_modules = [NodePath("InstantiatorModules/TerrainInstantiator"), NodePath("InstantiatorModules/TreeInstantiator")]
+map_size = Vector2i(256, 256)
+
+[node name="HeightmapGenerator" parent="Map/MapGenerator/GeneratorModules" index="0"]
+n1 = SubResource("FastNoiseLite_ikqcb")
+noise_superposition_mode = 2
+
+[node name="RainfallGenerator" parent="Map/MapGenerator/GeneratorModules" index="1"]
+n1 = SubResource("FastNoiseLite_8bupj")
+
+[node name="TreeInstantiator" type="Node" parent="Map/MapGenerator/InstantiatorModules" index="1"]
+script = ExtResource("5_dl7bp")
+
+[node name="InteriorSprite" parent="Map/BuildingContainer/Cabin" index="1"]
+z_index = 0
+position = Vector2(0, -52)
+offset = Vector2(0, 52)
+
+[connection signal="velocity_computed" from="Actors/NPCs/Bunny/NPCNavigator" to="Actors/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]
+[connection signal="timeout" from="Actors/NPCs/Bunny/NPCNavigator/path_recalculation_timer" to="Actors/NPCs/Bunny/NPCNavigator" method="_on_recalculation_timer_timeout"]
+
+[editable path="Actors/NPCs/Bunny"]
+[editable path="Map"]
+[editable path="Map/BuildingContainer/Cabin"]

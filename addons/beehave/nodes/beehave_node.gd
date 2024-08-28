@@ -18,22 +18,26 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 ## Executes this node and returns a status code.
 ## This method must be overwritten.
+@warning_ignore("unused_parameter")
 func tick(actor: Node, blackboard: Blackboard) -> int:
 	return SUCCESS
 
 
 ## Called when this node needs to be interrupted before it can return FAILURE or SUCCESS.
+@warning_ignore("unused_parameter")
 func interrupt(actor: Node, blackboard: Blackboard) -> void:
 	pass
 
 
 ## Called before the first time it ticks by the parent.
+@warning_ignore("unused_parameter")
 func before_run(actor: Node, blackboard: Blackboard) -> void:
 	pass
 
 
 ## Called after the last time it ticks and returns
 ## [code]SUCCESS[/code] or [code]FAILURE[/code].
+@warning_ignore("unused_parameter")
 func after_run(actor: Node, blackboard: Blackboard) -> void:
 	pass
 
@@ -41,6 +45,6 @@ func after_run(actor: Node, blackboard: Blackboard) -> void:
 func get_class_name() -> Array[StringName]:
 	return [&"BeehaveNode"]
 
-
+@warning_ignore("unused_parameter")
 func can_send_message(blackboard: Blackboard) -> bool:
 	return blackboard.get_value("can_send_message", false)

@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://nfnuhfeiakb4"]
+
+[ext_resource type="Script" path="res://Util/CamControl.gd" id="1_th2ho"]
+[ext_resource type="Script" path="res://World/src/Generator/DelaunayGenerator.gd" id="2_jk7a6"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3vru1"]
+noise_type = 2
+frequency = 0.0094
+offset = Vector3(-54.29, 0, 0)
+fractal_octaves = 2
+fractal_lacunarity = 1.0
+fractal_gain = -0.555
+fractal_weighted_strength = 1.0
+cellular_distance_function = 2
+cellular_jitter = -2.565
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = -23.47
+domain_warp_frequency = 0.01
+domain_warp_fractal_octaves = 2
+domain_warp_fractal_lacunarity = 23.965
+domain_warp_fractal_gain = 0.035
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 1)
+script = ExtResource("1_th2ho")
+
+[node name="Generator" type="Node2D" parent="."]
+position = Vector2(0, 1)
+script = ExtResource("2_jk7a6")
+n = SubResource("FastNoiseLite_3vru1")
+grid_resolution = Vector2i(30, 30)
+map_size = Vector2i(512, 512)
+
+[node name="Polygon2D" type="Polygon2D" parent="Generator"]
