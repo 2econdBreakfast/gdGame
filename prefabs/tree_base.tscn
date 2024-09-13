@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://brsme2a6osqvd"]
+
+[ext_resource type="Script" path="res://src/world_objects/trees/tree.gd" id="1_yhfe0"]
+[ext_resource type="Script" path="res://src/world_objects/drop_object_on_destroy.gd" id="2_fsx2n"]
+[ext_resource type="PackedScene" uid="uid://dn1u2gx15o57r" path="res://prefabs/log.tscn" id="3_rhe4y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ww488"]
+radius = 12.0416
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7s01k"]
+size = Vector2(20, 32)
+
+[node name="Tree" type="StaticBody2D"]
+y_sort_enabled = true
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_yhfe0")
+health = 3
+
+[node name="GroundCollisionShape" type="CollisionShape2D" parent="."]
+top_level = true
+y_sort_enabled = true
+shape = SubResource("CircleShape2D_ww488")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0, 11)
+offset = Vector2(0, -128)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0, 11)
+collision_layer = 1024
+collision_mask = 64
+input_pickable = false
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+top_level = true
+y_sort_enabled = true
+position = Vector2(-2, -45)
+shape = SubResource("RectangleShape2D_7s01k")
+
+[node name="DropObjectOnDestroy" type="Node" parent="."]
+script = ExtResource("2_fsx2n")
+item_prefab = ExtResource("3_rhe4y")
+
+[connection signal="destroyed" from="." to="DropObjectOnDestroy" method="_on_tree_destroyed"]

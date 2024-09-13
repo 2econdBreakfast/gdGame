@@ -1,0 +1,106 @@
+[gd_scene load_steps=22 format=3 uid="uid://cb5i0x0mu2ped"]
+
+[ext_resource type="Script" path="res://src/generator/MapGenerator.gd" id="1_aqgwl"]
+[ext_resource type="TileSet" uid="uid://dmxk6mov2niyb" path="res://assets/tilesets/terrain_tileset.tres" id="2_27l2y"]
+[ext_resource type="Script" path="res://src/generator/MapDataInitializer.gd" id="2_cwjxr"]
+[ext_resource type="Script" path="res://src/generator/HeightmapGenerator.gd" id="2_yoysw"]
+[ext_resource type="Script" path="res://src/generator/RainfallGenerator.gd" id="3_1gd7e"]
+[ext_resource type="FastNoiseLite" uid="uid://dcbamrn8mrur" path="res://assets/saved_fastnoiselite/heightmap_noise.tres" id="4_s3nf3"]
+[ext_resource type="Script" path="res://src/generator/BiomeGenerator.gd" id="5_5baa4"]
+[ext_resource type="Script" path="res://src/generator/TreeGenerator.gd" id="6_165s7"]
+[ext_resource type="Script" path="res://src/generator/TerrainGenerator.gd" id="6_r6hy4"]
+[ext_resource type="FastNoiseLite" uid="uid://bl71776xjddt5" path="res://assets/saved_fastnoiselite/rainmap_noise.tres" id="6_wavc3"]
+[ext_resource type="Script" path="res://src/chunk/chunk_manager.gd" id="7_vjeq7"]
+[ext_resource type="Script" path="res://src/generator/TerrainInstantiator.gd" id="7_vqu7g"]
+[ext_resource type="Script" path="res://src/navigation/NavigationManager.gd" id="7_x6j0q"]
+[ext_resource type="FastNoiseLite" uid="uid://bymrqdd4e5su5" path="res://assets/saved_fastnoiselite/biome_noise.tres" id="8_8kx8k"]
+[ext_resource type="Script" path="res://src/chunk/chunk_tree_instantiator.gd" id="14_aj4fj"]
+[ext_resource type="PackedScene" uid="uid://dvw25a0vlus7m" path="res://prefabs/tree_oak.tscn" id="16_gx5r8"]
+[ext_resource type="PackedScene" uid="uid://clu5ad658142a" path="res://prefabs/tree_pine.tscn" id="17_2cjjc"]
+[ext_resource type="PackedScene" uid="uid://bjdvnfdkdcyhj" path="res://prefabs/tree_dead.tscn" id="18_0jd0a"]
+[ext_resource type="PackedScene" uid="uid://ktm3k16iujs2" path="res://prefabs/tree_palm.tscn" id="19_182hi"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_xogl4"]
+source_geometry_group_name = &"navigation_polygon_source_group"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oygf2"]
+
+[node name="MapGenerator" type="Node2D"]
+script = ExtResource("1_aqgwl")
+map_size = Vector2i(256, 256)
+max_threads = 8
+
+[node name="GeneratorModules" type="Node" parent="."]
+
+[node name="MapDataInitializer" type="Node" parent="GeneratorModules"]
+script = ExtResource("2_cwjxr")
+
+[node name="HeightmapGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("2_yoysw")
+n1 = ExtResource("4_s3nf3")
+
+[node name="RainfallGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("3_1gd7e")
+n = ExtResource("6_wavc3")
+
+[node name="BiomeGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("5_5baa4")
+noise = ExtResource("8_8kx8k")
+
+[node name="TerrainGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("6_r6hy4")
+
+[node name="TreeGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("6_165s7")
+
+[node name="InstantiatorModules" type="Node" parent="."]
+
+[node name="TerrainInstantiator" type="Node" parent="InstantiatorModules"]
+script = ExtResource("7_vqu7g")
+
+[node name="TilemapNavigationManager" type="NavigationRegion2D" parent="."]
+top_level = true
+navigation_polygon = SubResource("NavigationPolygon_xogl4")
+script = ExtResource("7_x6j0q")
+
+[node name="Tilemaps" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="TerrainTilemap" type="TileMap" parent="Tilemaps"]
+z_index = -2
+texture_filter = 1
+tile_set = ExtResource("2_27l2y")
+rendering_quadrant_size = 32
+format = 2
+layer_0/name = "Water"
+layer_0/z_index = -1
+layer_1/name = "Terrain"
+layer_1/tile_data = PackedInt32Array()
+
+[node name="Buildings" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="ChunkManager" type="Node2D" parent="." node_paths=PackedStringArray("tree_instantiator", "chunk_container")]
+script = ExtResource("7_vjeq7")
+tree_instantiator = NodePath("ChunkTreeInstantiator")
+chunk_container = NodePath("../Chunks")
+
+[node name="ChunkArea" type="Area2D" parent="ChunkManager"]
+collision_layer = 0
+collision_mask = 2048
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChunkManager/ChunkArea"]
+shape = SubResource("RectangleShape2D_oygf2")
+
+[node name="ChunkTreeInstantiator" type="Node" parent="ChunkManager" node_paths=PackedStringArray("tree_container")]
+script = ExtResource("14_aj4fj")
+tree_prototypes = Array[PackedScene]([ExtResource("16_gx5r8"), ExtResource("17_2cjjc"), ExtResource("18_0jd0a"), ExtResource("19_182hi")])
+tree_container = NodePath("")
+
+[node name="Chunks" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[connection signal="generation_complete" from="." to="TilemapNavigationManager" method="_on_map_generator_generation_complete"]
+[connection signal="instantiation_complete" from="." to="TilemapNavigationManager" method="_on_map_generator_instantiation_complete"]
+[connection signal="body_exited" from="ChunkManager/ChunkArea" to="ChunkManager" method="_on_chunk_area_body_exited"]

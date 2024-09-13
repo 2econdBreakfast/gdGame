@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://ktm3k16iujs2"]
+
+[ext_resource type="PackedScene" uid="uid://brsme2a6osqvd" path="res://prefabs/tree_base.tscn" id="1_83df8"]
+[ext_resource type="Texture2D" uid="uid://buadkjtllmu8w" path="res://assets/sprites/tree_palm.tres" id="2_g2yal"]
+
+[node name="Tree" instance=ExtResource("1_83df8")]
+
+[node name="Sprite2D" parent="." index="1"]
+texture = ExtResource("2_g2yal")

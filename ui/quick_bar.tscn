@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvnnd7yosb00i"]
+
+[ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory.tres" id="1_yhm3u"]
+[ext_resource type="Script" path="res://ui/inventory.gd" id="2_h1s5k"]
+[ext_resource type="PackedScene" uid="uid://c0rglm6gdou6n" path="res://ui/inventory_cell.tscn" id="3_v6v1u"]
+
+[node name="QuickBar" type="Control"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1, 1.01811)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_yhm3u")
+script = ExtResource("2_h1s5k")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -222.0
+offset_top = -84.0
+offset_right = 222.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_yhm3u")
+stretch_mode = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="InventorySlots" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("1_yhm3u")
+
+[node name="InventorySlot" parent="AspectRatioContainer/MarginContainer2/InventorySlots" instance=ExtResource("3_v6v1u")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="AspectRatioContainer/MarginContainer2/InventorySlots" instance=ExtResource("3_v6v1u")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="AspectRatioContainer/MarginContainer2/InventorySlots" instance=ExtResource("3_v6v1u")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="AspectRatioContainer/MarginContainer2/InventorySlots" instance=ExtResource("3_v6v1u")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="AspectRatioContainer/MarginContainer2/InventorySlots" instance=ExtResource("3_v6v1u")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="AspectRatioContainer/MarginContainer2/InventorySlots" instance=ExtResource("3_v6v1u")]
+layout_mode = 2

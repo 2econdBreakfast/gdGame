@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0rglm6gdou6n"]
+
+[ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory.tres" id="1_7t3t4"]
+[ext_resource type="Script" path="res://ui/item_display_panel.gd" id="2_i7buw"]
+[ext_resource type="PackedScene" uid="uid://c37mj82ltg8tu" path="res://ui/item_display.tscn" id="3_i8m08"]
+
+[node name="InventoryCell" type="Panel"]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7t3t4")
+script = ExtResource("2_i7buw")
+
+[node name="ItemDisplay" parent="." instance=ExtResource("3_i8m08")]
+layout_mode = 1
+texture = null
+expand_mode = 0

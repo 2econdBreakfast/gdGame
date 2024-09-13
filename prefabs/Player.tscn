@@ -1,0 +1,94 @@
+[gd_scene load_steps=13 format=3 uid="uid://d34a52kj5ljdd"]
+
+[ext_resource type="Script" path="res://src/player/player.gd" id="1_fwv86"]
+[ext_resource type="SpriteFrames" uid="uid://c6odp0uge3uld" path="res://assets/animations/player.tres" id="2_indye"]
+[ext_resource type="Script" path="res://src/player/player_input_listener.gd" id="3_4w82k"]
+[ext_resource type="Script" path="res://src/player/player_state_machine.gd" id="4_608c1"]
+[ext_resource type="Script" path="res://src/player/states/idle_state.gd" id="5_irpis"]
+[ext_resource type="Script" path="res://src/player/states/move_state.gd" id="6_wht2f"]
+[ext_resource type="Script" path="res://src/player/states/run_state.gd" id="7_icq80"]
+[ext_resource type="Script" path="res://src/player/states/attack_state.gd" id="8_brm3i"]
+[ext_resource type="Script" path="res://src/player/item_detector.gd" id="9_c4c8k"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2xl5b"]
+height = 48.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dglgr"]
+size = Vector2(154, 191)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x6b1p"]
+radius = 29.0
+height = 150.0
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "input_listener", "state_machine")]
+y_sort_enabled = true
+collision_layer = 31
+collision_mask = 15
+script = ExtResource("1_fwv86")
+sprite = NodePath("Sprite")
+input_listener = NodePath("PlayerInputListener")
+state_machine = NodePath("StateMachine")
+
+[node name="FloorCollider" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_2xl5b")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+light_mask = 2
+visibility_layer = 2
+z_as_relative = false
+y_sort_enabled = true
+sprite_frames = ExtResource("2_indye")
+animation = &"walk_west"
+autoplay = "idle"
+offset = Vector2(0, -64)
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+radius = 25.0
+avoidance_layers = 4
+
+[node name="PlayerInputListener" type="Node" parent="."]
+script = ExtResource("3_4w82k")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_608c1")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("5_irpis")
+
+[node name="WalkState" type="Node" parent="StateMachine"]
+script = ExtResource("6_wht2f")
+
+[node name="RunState" type="Node" parent="StateMachine"]
+script = ExtResource("7_icq80")
+
+[node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitboxes")]
+script = ExtResource("8_brm3i")
+hitboxes = [NodePath("../../Hitboxes/Attack")]
+
+[node name="Hitboxes" type="Node2D" parent="."]
+
+[node name="Attack" type="Area2D" parent="Hitboxes"]
+collision_layer = 64
+collision_mask = 1536
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitboxes/Attack"]
+position = Vector2(0, -63.5)
+shape = SubResource("RectangleShape2D_dglgr")
+debug_color = Color(1, 0.0117647, 0.027451, 0)
+
+[node name="ItemDetector" type="Node2D" parent="."]
+script = ExtResource("9_c4c8k")
+
+[node name="CollectionRadius" type="Area2D" parent="ItemDetector"]
+collision_layer = 32
+collision_mask = 32
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemDetector/CollectionRadius"]
+position = Vector2(0, -64)
+shape = SubResource("CapsuleShape2D_x6b1p")
+debug_color = Color(0.832027, 0.391539, 0, 0.42)
+
+[connection signal="area_entered" from="ItemDetector/CollectionRadius" to="ItemDetector" method="_on_collection_radius_area_entered"]

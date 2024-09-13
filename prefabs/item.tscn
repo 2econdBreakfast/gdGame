@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://bi531wm70m1ae"]
+
+[ext_resource type="Script" path="res://src/items/Item.gd" id="1_vg4ud"]
+[ext_resource type="Resource" uid="uid://2xq6v40ol4x2" path="res://assets/unknown_item.tres" id="2_al7y3"]
+[ext_resource type="Texture2D" uid="uid://bljv31ebg2118" path="res://assets/sprites/unknown_item.png" id="2_j7onx"]
+[ext_resource type="Texture2D" uid="uid://0vwuk617ieus" path="res://assets/sprites/item_drop_shadow.png" id="3_6mley"]
+
+[sub_resource type="Animation" id="Animation_2mbjo"]
+resource_name = "ItemHover"
+length = 2.0001
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ItemSprite:offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ItemSprite/ShadowSprite:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1.2, 1.2), Vector2(1.24, 1.22), Vector2(1.2, 1.2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_blq4g"]
+_data = {
+"ItemHover": SubResource("Animation_2mbjo")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sna4u"]
+radius = 35.0571
+
+[node name="Item" type="Node2D" node_paths=PackedStringArray("item_sprite")]
+y_sort_enabled = true
+script = ExtResource("1_vg4ud")
+item_sprite = NodePath("ItemSprite")
+itemData = ExtResource("2_al7y3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_blq4g")
+}
+
+[node name="ItemSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -31.1111)
+texture = ExtResource("2_j7onx")
+offset = Vector2(0, -4.42292)
+
+[node name="ShadowSprite" type="Sprite2D" parent="ItemSprite"]
+show_behind_parent = true
+y_sort_enabled = true
+position = Vector2(0, 24)
+scale = Vector2(1.22949, 1.21474)
+texture = ExtResource("3_6mley")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_sna4u")
