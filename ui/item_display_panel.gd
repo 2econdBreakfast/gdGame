@@ -1,6 +1,6 @@
 @tool
 
-class_name InventorySlot extends Panel
+class_name InventorySlot extends Control
 
 var is_empty : bool :
 	get: return itemData == null || count == 0

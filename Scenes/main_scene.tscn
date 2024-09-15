@@ -35,7 +35,7 @@ debug_enabled = true
 move_range = 200.0
 
 [node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
-blackboard = NodePath("@Node@111821")
+blackboard = NodePath("@Node@17584")
 
 [node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
 max_ticks = 250
@@ -53,9 +53,6 @@ position_smoothing_enabled = true
 script = ExtResource("4_w6ky1")
 
 [node name="Map" parent="." instance=ExtResource("5_1a6y7")]
-y_sort_enabled = true
-
-[node name="Chunks" parent="Map" index="7"]
 y_sort_enabled = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
