@@ -20,6 +20,7 @@ y_sort_enabled = true
 position = Vector2(615, 446)
 collision_layer = 0
 collision_mask = 0
+debug_behavior_tree = true
 
 [node name="AnimatedSprite2D" parent="Actors/NPCs/Bunny" index="0"]
 animation = &"move_right"

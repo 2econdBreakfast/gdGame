@@ -4,14 +4,15 @@ class_name Inventory extends Node
 
 @export var money : int = 0
 @onready var main_inv_slots : Control = $MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots
-@onready var quick_bar_slots : Control = $QuickBar/Panel/InventorySlots
+@onready var quick_bar_slots : Control = $QuickBar/Panel/CenterContainer/InventorySlots
 var slots : Array[InventorySlot]
 const max_stack : int = 32
-
+var _focused_slot : InventorySlot
 func _ready():
 	$QuickBar.visible = false
 	$MainInventory.visible = false
-	
+	recache_slots()
+
 func _process(delta):
 	if Input.is_action_just_pressed("toggle_inventory"):
 		if $MainInventory.visible:
@@ -21,16 +22,17 @@ func _process(delta):
 		
 func open_main():
 	$AnimationPlayer.play("main_inv_fade_in")
+	slots[0].grab_focus()
 	
 func close_main():
 	$AnimationPlayer.play("main_inv_fade_out")
-
 	
 func open_quickbar():
 	$AnimationPlayer.play("quickbar_fade_out")
 	
 func close_quickbar():
 	$AnimationPlayer.play("quickbar_fade_out")
+
 func add(item : Item, amount : int):
 	var itemData : ItemData = item.itemData
 	
@@ -50,7 +52,7 @@ func add(item : Item, amount : int):
 		return
 
 func find_slot_for_item(new_itemData : ItemData) -> InventorySlot:
-	var slots : Array[InventorySlot] = get_all_slots()
+
 	if !slots:
 		print("couldn't find an empty slot for ", new_itemData.item_name)
 		return
@@ -66,10 +68,25 @@ func find_slot_for_item(new_itemData : ItemData) -> InventorySlot:
 	return first_empty_slot
 	
 func get_all_slots() -> Array[InventorySlot]:
-	var slots : Array[InventorySlot] = []
-	var to_check = quick_bar_slots.get_children()
-	to_check.append_array(main_inv_slots.get_children())
+	slots = []
+	var to_check = main_inv_slots.get_children()
+	to_check.append_array(quick_bar_slots.get_children())
 	for node in to_check:
 		if node is InventorySlot:
 			slots.append(node)
 	return slots
+
+
+func recache_slots():
+	get_all_slots()
+	for slot : InventorySlot in slots:
+		# check if slot is already connected to the connect slot function
+		# comparison number is 2 because signal is already connected internally
+		# see InventorySlot._on_focus_entered()
+		if slot.focus_entered.get_connections().size() < 2:
+			slot.focus_entered.connect(func connect_slot(): self._on_slot_focus_entered(slot))
+	
+
+func _on_slot_focus_entered(focused_slot : InventorySlot):
+	self._focused_slot = focused_slot
+	print(_focused_slot.name)

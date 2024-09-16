@@ -19,15 +19,15 @@ var _itemData : ItemData
 
 var id:
 	get:
-		return _itemData.id if _itemData else null
+		return _itemData.id if _itemData else -1
 
 var item_name:
 	get:
-		return _itemData.item_name if _itemData else null
+		return _itemData.item_name if _itemData else "unknown_item"
 
 var item_description:
 	get:
-		return _itemData.item_description if _itemData else null
+		return _itemData.item_description if _itemData else "unknown item"
 
 func _ready():
 	$AnimationPlayer.play("ItemHover")

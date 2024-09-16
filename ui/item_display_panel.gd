@@ -1,5 +1,3 @@
-@tool
-
 class_name InventorySlot extends Control
 
 var is_empty : bool :
@@ -8,20 +6,15 @@ var is_empty : bool :
 
 @export var itemData : ItemData:
 	set(v):
-		_itemData = v
-		$ItemDisplay.texture = _itemData.spriteTexture if _itemData else null
+		$ItemDisplay.item_data = v
 	get:
-		return _itemData
+		return $ItemDisplay.item_data
 
 var count : int :
 	set(v):
-		$ItemDisplay/ItemCount.text = var_to_str(v)
-		_count = v
+		$ItemDisplay.count = v
 	get: 
-		return _count
-
-var _count : int
-var _itemData : ItemData
+		return $ItemDisplay.count
 
 func add(new_item : ItemData, amount : int):
 	var remainder = 0
@@ -46,3 +39,20 @@ func remove(amount : int):
 		count = 0
 	else:
 		count -= amount
+
+
+func _on_mouse_exited():
+	_on_focus_exited()
+
+
+func _on_mouse_entered():
+	_on_focus_entered()
+
+
+func _on_focus_entered():
+	self.add_theme_stylebox_override("panel", \
+		self.get_theme_stylebox("focus", "InventorySlot"))
+
+
+func _on_focus_exited():
+	self.remove_theme_stylebox_override("panel")
