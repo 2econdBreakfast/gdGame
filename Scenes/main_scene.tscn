@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://ct4y62u26mkhu"]
 
 [ext_resource type="PackedScene" uid="uid://do3s8f6e077gw" path="res://prefabs/bunny.tscn" id="1_0h13k"]
-[ext_resource type="PackedScene" uid="uid://cvnnd7yosb00i" path="res://ui/quick_bar.tscn" id="1_nw8ng"]
+[ext_resource type="PackedScene" uid="uid://cvnnd7yosb00i" path="res://ui/inventory.tscn" id="1_nw8ng"]
 [ext_resource type="PackedScene" uid="uid://d34a52kj5ljdd" path="res://prefabs/Player.tscn" id="2_52eap"]
 [ext_resource type="PackedScene" uid="uid://dn8ptif88wr4i" path="res://prefabs/camera.tscn" id="3_6l6es"]
 [ext_resource type="Script" path="res://src/items/ItemManager.gd" id="4_w6ky1"]
@@ -36,7 +36,7 @@ debug_enabled = true
 move_range = 200.0
 
 [node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
-blackboard = NodePath("@Node@17584")
+blackboard = NodePath("@Node@144103")
 
 [node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
 max_ticks = 250

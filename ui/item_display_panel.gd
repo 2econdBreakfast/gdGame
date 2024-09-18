@@ -1,7 +1,6 @@
 class_name InventorySlot extends Control
 
 
-signal clicked(slot: InventorySlot)
 var is_empty : bool :
 	get: return itemData == null || count == 0
 
@@ -10,8 +9,8 @@ var is_empty : bool :
 	set(v):
 		$ItemDisplay.item_data = v
 	get:
-		return $ItemDisplay.item_data
-
+		return $ItemDisplay.item_data if $ItemDisplay else null
+		
 var count : int :
 	set(v):
 		$ItemDisplay.count = v
@@ -42,20 +41,9 @@ func remove(amount : int):
 	else:
 		count -= amount
 
-
-func _on_mouse_exited():
-	_on_focus_exited()
-
-
-func _on_mouse_entered():
-	_on_focus_entered()
-
-
 func _on_focus_entered():
 	self.add_theme_stylebox_override("panel", \
 		self.get_theme_stylebox("focus", "InventorySlot"))
-		
-
 
 
 func _on_focus_exited():

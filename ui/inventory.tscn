@@ -380,9 +380,11 @@ libraries = {
 "": SubResource("AnimationLibrary_e0o12")
 }
 
-[node name="SelectionManager" type="Node" parent="."]
+[node name="CursorManager" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 script = ExtResource("4_m3flx")
 
-[connection signal="gui_input" from="." to="SelectionManager" method="_on_inventory_gui_input"]
 [connection signal="child_order_changed" from="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" to="." method="recache_slots"]
 [connection signal="child_order_changed" from="QuickBar/Panel/CenterContainer/InventorySlots" to="." method="recache_slots"]

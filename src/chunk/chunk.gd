@@ -8,8 +8,8 @@ func _init(size):
 		row.resize(size)
 	self.y_sort_enabled = true
 
-func add_object(obj: PackedScene, position: Vector2):
+func add_object(obj: PackedScene, pos: Vector2):
 	var instance = obj.instance()
-	instance.position = position
+	instance.position = pos
 	add_child(instance)
 

@@ -18,6 +18,7 @@ offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 2
+mouse_filter = 2
 theme = ExtResource("1_7t3t4")
 theme_type_variation = &"InventorySlot"
 script = ExtResource("2_i7buw")
@@ -29,5 +30,3 @@ expand_mode = 0
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
