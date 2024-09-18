@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cvnnd7yosb00i"]
+[gd_scene load_steps=11 format=3 uid="uid://cvnnd7yosb00i"]
 
 [ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory.tres" id="1_yhm3u"]
 [ext_resource type="Script" path="res://ui/inventory.gd" id="2_h1s5k"]
 [ext_resource type="PackedScene" uid="uid://c0rglm6gdou6n" path="res://ui/inventory_cell.tscn" id="3_v6v1u"]
+[ext_resource type="Script" path="res://ui/SelectionManager.gd" id="4_m3flx"]
 
 [sub_resource type="Theme" id="Theme_j576f"]
 
@@ -379,5 +380,9 @@ libraries = {
 "": SubResource("AnimationLibrary_e0o12")
 }
 
+[node name="SelectionManager" type="Node" parent="."]
+script = ExtResource("4_m3flx")
+
+[connection signal="gui_input" from="." to="SelectionManager" method="_on_inventory_gui_input"]
 [connection signal="child_order_changed" from="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" to="." method="recache_slots"]
 [connection signal="child_order_changed" from="QuickBar/Panel/CenterContainer/InventorySlots" to="." method="recache_slots"]

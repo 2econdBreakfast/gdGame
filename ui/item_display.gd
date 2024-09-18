@@ -27,6 +27,24 @@ var count : int:
 	get: 
 		return _count
 		
-var _count : int
+var grabbed : bool
+
+func _process(delta):
+	if grabbed:
+		self.global_position = get_global_mouse_position()
+	else: 
+		self.global_position = get_parent().global_position
+		
+func _gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				grabbed = true
+			else:
+				print("about to release")
+				grabbed = false
+				print("releasing")
+		
+var _count : int 
 
 
