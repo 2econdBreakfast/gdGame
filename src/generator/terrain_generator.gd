@@ -43,13 +43,13 @@ func determine_tiletype_threaded(map_data_slice : Array[Array]):
 			var tile_data = map_data_slice[y][x] as MapTileData
 			
 			if tile_data.height < GeneratorSettings.SHALLOW_WATER_MAX_HEIGHT:
-				tile_data.terrain_type = Globals.TileCoords.WATER
+				tile_data.terrain_type = Globals.TerrainTileType.WATER
 			else:
 				match(tile_data.biome):
 					Globals.Biome.BEACH:
-						tile_data.terrain_type = Globals.TileCoords.SAND
+						tile_data.terrain_type = Globals.TerrainTileType.SAND
 					Globals.Biome.PLAINS:
-						tile_data.terrain_type = Globals.TileCoords.GRASS
+						tile_data.terrain_type = Globals.TerrainTileType.GRASS
 					Globals.Biome.FOREST:
-						tile_data.terrain_type = Globals.TileCoords.FOREST_GRASS
+						tile_data.terrain_type = Globals.TerrainTileType.FOREST_GRASS
 					_: return 0

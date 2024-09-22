@@ -1,19 +1,21 @@
-[gd_scene load_steps=22 format=3 uid="uid://cb5i0x0mu2ped"]
+[gd_scene load_steps=24 format=3 uid="uid://cb5i0x0mu2ped"]
 
-[ext_resource type="Script" path="res://src/generator/MapGenerator.gd" id="1_aqgwl"]
+[ext_resource type="Script" path="res://src/generator/map_generator.gd" id="1_aqgwl"]
 [ext_resource type="TileSet" uid="uid://dmxk6mov2niyb" path="res://assets/tilesets/terrain_tileset.tres" id="2_27l2y"]
-[ext_resource type="Script" path="res://src/generator/MapDataInitializer.gd" id="2_cwjxr"]
-[ext_resource type="Script" path="res://src/generator/HeightmapGenerator.gd" id="2_yoysw"]
-[ext_resource type="Script" path="res://src/generator/RainfallGenerator.gd" id="3_1gd7e"]
+[ext_resource type="Script" path="res://src/generator/map_data_initializer.gd" id="2_cwjxr"]
+[ext_resource type="Script" path="res://src/generator/heightmap_generator.gd" id="2_yoysw"]
+[ext_resource type="Script" path="res://src/generator/rainfall_generator.gd" id="3_1gd7e"]
 [ext_resource type="FastNoiseLite" uid="uid://dcbamrn8mrur" path="res://assets/saved_fastnoiselite/heightmap_noise.tres" id="4_s3nf3"]
-[ext_resource type="Script" path="res://src/generator/BiomeGenerator.gd" id="5_5baa4"]
-[ext_resource type="Script" path="res://src/generator/TreeGenerator.gd" id="6_165s7"]
-[ext_resource type="Script" path="res://src/generator/TerrainGenerator.gd" id="6_r6hy4"]
+[ext_resource type="Script" path="res://src/generator/biome_generator.gd" id="5_5baa4"]
+[ext_resource type="Script" path="res://src/generator/tree_generator.gd" id="6_165s7"]
+[ext_resource type="Script" path="res://src/generator/terrain_generator.gd" id="6_r6hy4"]
 [ext_resource type="FastNoiseLite" uid="uid://bl71776xjddt5" path="res://assets/saved_fastnoiselite/rainmap_noise.tres" id="6_wavc3"]
 [ext_resource type="Script" path="res://src/chunk/chunk_manager.gd" id="7_vjeq7"]
-[ext_resource type="Script" path="res://src/generator/TerrainInstantiator.gd" id="7_vqu7g"]
+[ext_resource type="Script" path="res://src/generator/terrain_instantiator.gd" id="7_vqu7g"]
 [ext_resource type="Script" path="res://src/navigation/NavigationManager.gd" id="7_x6j0q"]
 [ext_resource type="FastNoiseLite" uid="uid://bymrqdd4e5su5" path="res://assets/saved_fastnoiselite/biome_noise.tres" id="8_8kx8k"]
+[ext_resource type="Script" path="res://src/generator/building_placement_generator.gd" id="10_n26en"]
+[ext_resource type="Script" path="res://src/generator/building_instantiator.gd" id="13_wax1l"]
 [ext_resource type="Script" path="res://src/chunk/chunk_tree_instantiator.gd" id="14_aj4fj"]
 [ext_resource type="PackedScene" uid="uid://dvw25a0vlus7m" path="res://prefabs/tree_oak.tscn" id="16_gx5r8"]
 [ext_resource type="PackedScene" uid="uid://clu5ad658142a" path="res://prefabs/tree_pine.tscn" id="17_2cjjc"]
@@ -50,6 +52,9 @@ noise = ExtResource("8_8kx8k")
 [node name="TerrainGenerator" type="Node" parent="GeneratorModules"]
 script = ExtResource("6_r6hy4")
 
+[node name="BuildingPlacementGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("10_n26en")
+
 [node name="TreeGenerator" type="Node" parent="GeneratorModules"]
 script = ExtResource("6_165s7")
 
@@ -57,6 +62,10 @@ script = ExtResource("6_165s7")
 
 [node name="TerrainInstantiator" type="Node" parent="InstantiatorModules"]
 script = ExtResource("7_vqu7g")
+
+[node name="BuildingInstantiator" type="Node" parent="InstantiatorModules" node_paths=PackedStringArray("building_container")]
+script = ExtResource("13_wax1l")
+building_container = NodePath("../../Buildings")
 
 [node name="TilemapNavigationManager" type="NavigationRegion2D" parent="."]
 top_level = true
@@ -93,10 +102,9 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChunkManager/ChunkArea"]
 shape = SubResource("RectangleShape2D_oygf2")
 
-[node name="ChunkTreeInstantiator" type="Node" parent="ChunkManager" node_paths=PackedStringArray("tree_container")]
+[node name="ChunkTreeInstantiator" type="Node" parent="ChunkManager"]
 script = ExtResource("14_aj4fj")
 tree_prototypes = Array[PackedScene]([ExtResource("16_gx5r8"), ExtResource("17_2cjjc"), ExtResource("18_0jd0a"), ExtResource("19_182hi")])
-tree_container = NodePath("")
 
 [node name="Chunks" type="Node2D" parent="."]
 y_sort_enabled = true

@@ -11,7 +11,7 @@ static func get_biome_by_id(id):
 static var FOREST : BiomeData = BiomeData.new(
 	Globals.Biome.FOREST,
 	"Forest",
-	Globals.TileCoords.FOREST_GRASS,
+	Globals.TerrainTileType.FOREST_GRASS,
 	[
 		Globals.TreeID.PINE,
 		Globals.TreeID.DEAD
@@ -22,7 +22,7 @@ static var FOREST : BiomeData = BiomeData.new(
 static var PLAINS : BiomeData = BiomeData.new(
 	Globals.Biome.PLAINS,
 	"Forest",
-	Globals.TileCoords.GRASS,
+	Globals.TerrainTileType.GRASS,
 	[
 		Globals.TreeID.OAK
 	],
@@ -32,7 +32,7 @@ static var PLAINS : BiomeData = BiomeData.new(
 static var BEACH : BiomeData = BiomeData.new(
 	Globals.Biome.BEACH,
 	"Forest",
-	Globals.TileCoords.SAND,
+	Globals.TerrainTileType.SAND,
 	[
 		Globals.TreeID.PALM
 	],
@@ -42,7 +42,7 @@ static var BEACH : BiomeData = BiomeData.new(
 static var OCEAN : BiomeData = BiomeData.new(
 	Globals.Biome.OCEAN,
 	"Ocean",
-	Globals.TileCoords.WATER,
+	Globals.TerrainTileType.WATER,
 	[],
 	0.0
 )

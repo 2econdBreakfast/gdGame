@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://bnqrolr6i6i47"]
+[gd_scene load_steps=9 format=3 uid="uid://bnqrolr6i6i47"]
 
 [ext_resource type="Texture2D" uid="uid://c0dx0ga7gmjiv" path="res://assets/sprites/cabin_interior.png" id="1_3jhwi"]
 [ext_resource type="Script" path="res://src/buildings/building.gd" id="1_sxtgj"]
 [ext_resource type="Texture2D" uid="uid://lcl8b16jf4yd" path="res://assets/sprites/cabin_exterior.png" id="2_ohreh"]
 [ext_resource type="SpriteFrames" uid="uid://5j2jjga4gia1" path="res://assets/animations/cabin_door_anim.tres" id="3_a55k0"]
 [ext_resource type="Script" path="res://src/buildings/door.gd" id="4_7abu2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pwgp2"]
+size = Vector2(592, 493)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jwsbk"]
 radius = 140.129
@@ -22,10 +25,9 @@ position = Vector2(-92, 474)
 collision_layer = 23
 collision_mask = 7
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InteriorArea2D"]
-position = Vector2(89, -257)
-scale = Vector2(0.961309, 0.941844)
-polygon = PackedVector2Array(-313.115, 258.005, -313.115, -279.24, 314.155, -279.24, 314.155, 256.943)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteriorArea2D"]
+position = Vector2(90, -268.5)
+shape = SubResource("RectangleShape2D_pwgp2")
 
 [node name="InteriorSprite" type="Sprite2D" parent="."]
 z_index = -1
@@ -33,7 +35,6 @@ y_sort_enabled = true
 texture = ExtResource("1_3jhwi")
 
 [node name="ExteriorSprite" type="Sprite2D" parent="."]
-visible = false
 y_sort_enabled = true
 position = Vector2(0, 475)
 texture = ExtResource("2_ohreh")

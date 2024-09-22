@@ -7,19 +7,20 @@ func instantiate(generation_cache : Dictionary):
 	tilemap.clear()
 	for y in range(map_data.size()):
 		for x in range(map_data[y].size()):
-			if map_data[y][x].biome == Globals.Biome.OCEAN:
-				tilemap.set_cell(
-					0,
-					Vector2i(x, y),
-					0,
-					map_data[y][x].terrain_type
-				)
-			else:
-				tilemap.set_cell(
-					1,
-					Vector2i(x, y),
-					0,
-					map_data[y][x].terrain_type
-				)
+			var tile : MapTileData = map_data[y][x]
+			if tile.terrain_type == Globals.TerrainTileType.BUILDING:
+				continue
+				
+			var tilemap_layer = 0
+			
+			if tile.biome == Globals.Biome.OCEAN:
+				tilemap_layer = 1
+
+			tilemap.set_cell(
+				1,
+				Vector2i(x, y),
+				0,
+				tile.terrain_type
+			)
 			
 

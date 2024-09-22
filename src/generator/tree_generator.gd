@@ -3,6 +3,8 @@ class_name TreeGenerator extends GeneratorModule
 @export var rainfall_weight = 0.5
 @export var terrain_type_weight = 0.5
 
+var incompatible_terrain = [Globals.TerrainTileType.WATER, Globals.TerrainTileType.DEEP_WATER, Globals.TerrainTileType.BUILDING]
+
 var terrain_chance_map : Dictionary = {
 	Biomes.PLAINS.terrain_atlas_coords : 0.2,
 	Biomes.FOREST.terrain_atlas_coords : 0.4,
@@ -18,8 +20,8 @@ func generate(generation_cache : Dictionary):
 		for x in range(width):
 			var tile_data : MapTileData = map_data[y][x]
 				
-			# don't put trees on water tiles
-			if tile_data.terrain_type == Globals.TileCoords.DEEP_WATER or tile_data.terrain_type == Globals.TileCoords.WATER:
+			# don't put trees on incompatible tiles
+			if tile_data.terrain_type in incompatible_terrain:
 				continue
 				
 			var tree

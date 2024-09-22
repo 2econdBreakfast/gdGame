@@ -175,7 +175,7 @@ func load_chunk(chunk_position : Vector2i):
 	var chunk
 	if chunk_saved_data:
 		chunk = chunk_saved_data.instantiate()
-		chunk_container.add_child(chunk)
+		chunk_container.call_deferred("add_child", chunk)
 		print("loading saved chunk at ", chunk_position)
 	else:
 		chunk = instantiate_chunk(chunk_position)

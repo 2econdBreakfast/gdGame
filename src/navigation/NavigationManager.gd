@@ -6,11 +6,11 @@ var terrain_tilemap: TileMap
 var obstacle_tilemap: TileMap
 
 var walkable_tile_atlas_coords : Array = [
-	Globals.TileCoords.FOREST_GRASS,
-	Globals.TileCoords.GRASS,
-	Globals.TileCoords.SAND,
-	Globals.TileCoords.SOIL,
-	Globals.TileCoords.RICH_SOIL,
+	Globals.TerrainTileType.FOREST_GRASS,
+	Globals.TerrainTileType.GRASS,
+	Globals.TerrainTileType.SAND,
+	Globals.TerrainTileType.SOIL,
+	Globals.TerrainTileType.RICH_SOIL,
 ]
 
 var cabin : Node2D

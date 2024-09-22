@@ -2,7 +2,7 @@ class_name Globals
 
 static var THREAD_DICTIONARY : Dictionary = {}
 
-class TileCoords:
+class TerrainTileType:
 	const DEEP_WATER		= Vector2i(0, 0)
 	const WATER				= Vector2i(1, 0)
 	const GRASS				= Vector2i(2, 0)
@@ -10,6 +10,7 @@ class TileCoords:
 	const SAND				= Vector2i(4, 0)
 	const SOIL				= Vector2i(5, 0)
 	const RICH_SOIL			= Vector2i(6, 0)
+	const BUILDING			= Vector2i(-1, -1)
 
 class Biome:
 	const FOREST = 0

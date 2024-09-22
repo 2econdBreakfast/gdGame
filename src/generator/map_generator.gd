@@ -36,17 +36,18 @@ func generate_and_instantiate():
 	generation_cache["width"] = map_size.x
 	generation_cache["height"] = map_size.y
 	generation_cache["max_threads"] = max_threads
-	
+	generation_cache["terrain_tilemap"] = terrain_tilemap
 	for module : GeneratorModule in generator_modules:
 		if module.enabled:
 			module.generate(generation_cache)
 	
-	generation_cache["terrain_tilemap"] = terrain_tilemap
+
 	for module : InstantiatorModule in instantiator_modules:
 		if module.enabled:
 			module.instantiate(generation_cache)
 		
 	chunk_manager.initialize(generation_cache)
+	instantiation_complete.emit()
 	
 	if debug:
 		Debug.Memory.print_mem_usage("Memory usage after clearing cache")

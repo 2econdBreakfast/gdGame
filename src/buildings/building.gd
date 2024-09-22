@@ -2,18 +2,26 @@ extends Node2D
 
 class_name Building
 
-var sprite : Sprite2D
+var exterior_sprite : Sprite2D:
+	get: 
+		return $ExteriorSprite
 var body_inside : bool
-var area : Area2D
+var area : Area2D:
+	get: 
+		return $InteriorArea2D
+var rect : RectangleShape2D:
+	get: 
+		return $InteriorArea2D/CollisionShape2D.shape
 
 func _ready():
-	sprite = get_node("ExteriorSprite")
-	area = get_node("InteriorArea2D")
+	exterior_sprite = $Sprite2D
+	area = $InteriorArea2D
+	rect = $InteriorArea2D/CollisionShape2D.shape
 
 @warning_ignore("unused_parameter")
 func _process(delta):
 	var fade_rate = -0.02 if body_inside else 0.02
-	sprite.modulate.a = clamp(sprite.modulate.a + fade_rate, 0, 1)
+	exterior_sprite.modulate.a = clamp(exterior_sprite.modulate.a + fade_rate, 0, 1)
 
 
 func _on_interior_area_2d_body_entered(body):
