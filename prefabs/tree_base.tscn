@@ -45,4 +45,7 @@ shape = SubResource("RectangleShape2D_7s01k")
 script = ExtResource("2_fsx2n")
 item_prefab = ExtResource("3_rhe4y")
 
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+radius = 20.0
+
 [connection signal="destroyed" from="." to="DropObjectOnDestroy" method="_on_tree_destroyed"]

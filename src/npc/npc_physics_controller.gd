@@ -18,19 +18,22 @@ var target_position : Vector2 :
 
 func _ready():
 	nav_agent.target_reached.connect(_on_npc_navigator_target_reached)
+
 func _physics_process(delta):
 	if not nav_agent.is_navigation_finished():
 		self._update_cached_direction()
-		nav_agent.velocity = nav_agent.velocity.lerp(dir * npc_data.move_speed * delta, npc_data.acceleration * delta)
+		var new_velocity = nav_agent.velocity.lerp(dir * npc_data.move_speed * delta, npc_data.acceleration * delta)
+		nav_agent.velocity = new_velocity
 		
 func _recalculate_path(new_position):
 	finished_navigating = false
 	nav_agent.next_target_position = new_position
 	
 func _on_npc_navigator_velocity_computed(safe_velocity):
-	parent.velocity = safe_velocity
-	self.velocity = safe_velocity
-	parent.move_and_collide(safe_velocity)
+	if !dir.is_equal_approx(Vector2.ZERO):
+		parent.velocity = safe_velocity
+		self.velocity = safe_velocity
+		parent.move_and_collide(safe_velocity)
 
 func _on_npc_navigator_target_reached():
 	finished_navigating = true

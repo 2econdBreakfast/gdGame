@@ -30,9 +30,13 @@ func initialize(generation_cache : Dictionary):
 	var chunkpath = "user://chunks/"
 	
 	# clear artifacts from last generation
-	var dir = DirAccess.open(chunkpath)
-	for file in dir.get_files():
-		dir.remove(file)
+	if DirAccess.dir_exists_absolute(chunkpath):
+		var dir = DirAccess.open(chunkpath)
+		for file in dir.get_files():
+			dir.remove(file)
+	else:
+		DirAccess.make_dir_absolute(chunkpath)
+		
 	
 	terrain_tilemap = generation_cache.get("terrain_tilemap")
 	single_tile_size = terrain_tilemap.tile_set.tile_size
@@ -49,7 +53,6 @@ func initialize(generation_cache : Dictionary):
 	
 	var chunk_map_size : Vector2i = Vector2i(map_width, map_height) / chunk_tile_size
 	
-	print("Map Size: ", chunk_map_size)
 	chunk_map.resize(chunk_map_size.y)
 	for y in range(chunk_map_size.y):
 		chunk_map[y].resize(chunk_map_size.y)

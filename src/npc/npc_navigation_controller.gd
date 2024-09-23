@@ -13,7 +13,7 @@ var next_target_position : Vector2 :
 		return _next_target_position_internal
 var _next_target_position_internal : Vector2
 var position_last_timeout : Vector2
-@onready var timer : Timer = get_node("path_recalculation_timer")
+@onready var timer : Timer = $Timer
 
 # used to check for nav timeout (if stuck, stop trying to move to target)
 var ticks_at_position_until_timeout : int = 5

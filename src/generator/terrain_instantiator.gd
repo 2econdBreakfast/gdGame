@@ -1,5 +1,6 @@
 class_name TerrainInstantiator extends InstantiatorModule
 
+var water_tiles = [Globals.TerrainTileType.WATER, Globals.TerrainTileType.DEEP_WATER]
 func instantiate(generation_cache : Dictionary):
 	var map_data : Array[Array] = generation_cache["map_data"]
 	var tilemap : TileMap = generation_cache["terrain_tilemap"]
@@ -13,11 +14,11 @@ func instantiate(generation_cache : Dictionary):
 				
 			var tilemap_layer = 0
 			
-			if tile.biome == Globals.Biome.OCEAN:
+			if tile.terrain_type in water_tiles:
 				tilemap_layer = 1
 
 			tilemap.set_cell(
-				1,
+				tilemap_layer,
 				Vector2i(x, y),
 				0,
 				tile.terrain_type

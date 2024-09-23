@@ -13,11 +13,6 @@ var rect : RectangleShape2D:
 	get: 
 		return $InteriorArea2D/CollisionShape2D.shape
 
-func _ready():
-	exterior_sprite = $Sprite2D
-	area = $InteriorArea2D
-	rect = $InteriorArea2D/CollisionShape2D.shape
-
 @warning_ignore("unused_parameter")
 func _process(delta):
 	var fade_rate = -0.02 if body_inside else 0.02

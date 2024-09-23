@@ -33,3 +33,8 @@ class ThreadStatus:
 	const RUNNING = 0
 	const FINISHED = 1
 	const FAILED = 3
+	
+enum CollisionLayers {
+	NAVIGATION_OBSTACLE = 2,
+	
+}

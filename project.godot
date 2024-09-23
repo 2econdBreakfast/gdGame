@@ -102,9 +102,11 @@ toggle_inventory={
 
 [layer_names]
 
+2d_physics/layer_1="ground_collision"
 2d_navigation/layer_1="walkable"
 2d_physics/layer_2="navigation_obstacle"
 2d_navigation/layer_2="unwalkable"
+2d_physics/layer_3="water"
 2d_physics/layer_5="interior"
 2d_physics/layer_6="items"
 2d_physics/layer_7="player_hitbox"
@@ -112,8 +114,6 @@ toggle_inventory={
 2d_physics/layer_9="npc_hitbox"
 2d_physics/layer_10="npc_hurtbox"
 2d_physics/layer_11="world_object_hurtbox"
-2d_physics/layer_12="player_ground_collision"
-2d_physics/layer_13="water"
 avoidance/layer_1="trees"
 avoidance/layer_2="house"
 avoidance/layer_3="player"

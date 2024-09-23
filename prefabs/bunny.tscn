@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://do3s8f6e077gw"]
+[gd_scene load_steps=15 format=3 uid="uid://khlwhx7tr6b1"]
 
 [ext_resource type="Script" path="res://src/npc/npc_root.gd" id="1_eemqy"]
 [ext_resource type="Script" path="res://src/npc/npc_physics_controller.gd" id="1_hdlhd"]
@@ -23,11 +23,24 @@ height = 44.0
 
 [node name="Bunny" type="CharacterBody2D"]
 y_sort_enabled = true
-collision_layer = 2
-collision_mask = 2
+position = Vector2(362, 158)
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_eemqy")
+debug_behavior_tree = true
+
+[node name="NPCNavigator" type="NavigationAgent2D" parent="."]
+path_desired_distance = 50.0
+target_desired_distance = 30.0
+avoidance_enabled = true
+time_horizon_agents = 3.53
+time_horizon_obstacles = 3.34
+avoidance_priority = 0.2
+debug_enabled = true
+script = ExtResource("3_s2xid")
+
+[node name="Timer" type="Timer" parent="NPCNavigator"]
+wait_time = 0.05
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 y_sort_enabled = true
@@ -40,20 +53,6 @@ position = Vector2(1, 7)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_307u7")
 
-[node name="NPCNavigator" type="NavigationAgent2D" parent="."]
-path_desired_distance = 4.0
-navigation_layers = 7
-avoidance_enabled = true
-radius = 30.0
-max_speed = 300.0
-avoidance_layers = 16
-avoidance_mask = 16
-script = ExtResource("3_s2xid")
-
-[node name="path_recalculation_timer" type="Timer" parent="NPCNavigator"]
-wait_time = 0.05
-autostart = true
-
 [node name="NPCAnimationController" type="Node2D" parent="."]
 script = ExtResource("4_3dwae")
 
@@ -64,12 +63,12 @@ script = ExtResource("1_hdlhd")
 script = ExtResource("5_jahln")
 move_speed = 200.0
 acceleration = 100.0
-move_range = 20.0
+move_range = 200.0
 
 [node name="BehaviorTree" type="Node" parent="." node_paths=PackedStringArray("blackboard", "actor")]
 script = ExtResource("6_1v6hn")
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@17607")
+blackboard = NodePath("@Node@126190")
 actor = NodePath("..")
 
 [node name="Main" type="Node" parent="BehaviorTree"]
@@ -99,3 +98,4 @@ shape = SubResource("CapsuleShape2D_4krq1")
 debug_color = Color(0, 0.649812, 0.126902, 0.42)
 
 [connection signal="velocity_computed" from="NPCNavigator" to="NPCBodyController" method="_on_npc_navigator_velocity_computed"]
+[connection signal="timeout" from="NPCNavigator/Timer" to="NPCNavigator" method="_on_recalculation_timer_timeout"]

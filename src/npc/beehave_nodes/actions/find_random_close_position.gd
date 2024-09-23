@@ -4,11 +4,12 @@ class_name FindValidClosePosition extends ActionLeaf
 
 func before_run(actor, blackboard: Blackboard):
 	query_params.shape = actor.get_node("FloorCollider").shape
+	query_params.collision_mask = actor.collision_mask
 	
 func tick(actor, blackboard: Blackboard):
 	var cur_pos = actor.global_position
 	var random_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
-	var move_amount = (actor.npc_data.move_range * random_direction)
+	var move_amount = (200 * random_direction)
 	var target_pos = cur_pos + move_amount
 	if position_is_valid(actor, actor.get_world_2d(), target_pos):
 		blackboard.set_value("target_pos", target_pos)
