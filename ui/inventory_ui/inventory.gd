@@ -8,11 +8,21 @@ const max_stack : int = 32
 var focused_slot : InventorySlot
 var grabbed_item : ItemDisplay
 
+var quickbar_actions : Array[String] = [
+	"quick_bar_1",
+	"quick_bar_2",
+	"quick_bar_3",
+	"quick_bar_4",
+	"quick_bar_5",
+	"quick_bar_6"
+]
+
 var displaying : bool
 func _ready():
 	$QuickBar.visible = false
 	$MainInventory.visible = false
 	recache_slots()
+	$QuickbarDisplayTimer.timeout.connect(close_quickbar)
 
 func _input(event):
 	if Input.is_action_just_pressed("toggle_inventory"):
@@ -22,20 +32,46 @@ func _input(event):
 		else:
 			displaying = true
 			open_main()
+	else:
+		for action in quickbar_actions:
+			if Input.is_action_just_pressed(action):
+				open_quickbar()
+				break
 
 		
 func open_main():
 	print("opening inv")
+	if $QuickBar.visible:
+		close_quickbar()
+		await $AnimationPlayer.animation_finished
+	$QuickBar.visible = true
+	$MainInventory.visible = true
 	$AnimationPlayer.play("main_inv_fade_in")
 	
 func close_main():
 	$AnimationPlayer.play("main_inv_fade_out")
+	await $AnimationPlayer.animation_finished
+	$QuickBar.visible = false
+	$MainInventory.visible = false
 	
 func open_quickbar():
-	$AnimationPlayer.play("quickbar_fade_out")
+	if $MainInventory.visible:
+		return
+		print("can't open quickbar, main inv still open")
+	if !$QuickBar.visible:
+		$QuickBar.visible = true
+		$AnimationPlayer.play("quickbar_fade_in")
+		await $AnimationPlayer.animation_finished
+	$QuickbarDisplayTimer.start()
+	
 	
 func close_quickbar():
-	$AnimationPlayer.play("quickbar_fade_out")
+	if $MainInventory.visible:
+		return
+	if $QuickBar.visible:
+		$AnimationPlayer.play("quickbar_fade_out")
+		await $AnimationPlayer.animation_finished
+		$QuickBar.visible = false
 
 func add(item : Item, amount : int):
 	var itemData : ItemData = item.itemData

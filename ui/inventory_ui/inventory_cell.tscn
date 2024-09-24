@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://c0rglm6gdou6n"]
 
-[ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory.tres" id="1_7t3t4"]
-[ext_resource type="Script" path="res://ui/item_display_panel.gd" id="2_i7buw"]
-[ext_resource type="PackedScene" uid="uid://c37mj82ltg8tu" path="res://ui/item_display.tscn" id="3_i8m08"]
+[ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory_ui/inventory.tres" id="1_7t3t4"]
+[ext_resource type="Script" path="res://ui/inventory_ui/item_display_panel.gd" id="2_i7buw"]
+[ext_resource type="PackedScene" uid="uid://c37mj82ltg8tu" path="res://ui/inventory_ui/item_display.tscn" id="3_i8m08"]
 
 [node name="InventorySlot" type="Panel"]
 custom_minimum_size = Vector2(64, 64)

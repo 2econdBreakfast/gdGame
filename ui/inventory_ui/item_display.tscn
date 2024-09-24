@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c37mj82ltg8tu"]
 
 [ext_resource type="Texture2D" uid="uid://dlm1tmm7h1ge7" path="res://assets/sprites/log.png" id="1_1w8o0"]
-[ext_resource type="Script" path="res://ui/item_display.gd" id="2_njyf4"]
+[ext_resource type="Script" path="res://ui/inventory_ui/item_display.gd" id="2_njyf4"]
 
 [node name="ItemDisplay" type="TextureRect"]
 anchors_preset = 15

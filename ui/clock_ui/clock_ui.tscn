@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7c11p3hlhslx"]
+
+[ext_resource type="Script" path="res://ui/clock_ui/clock_ui.gd" id="1_jgqwa"]
+[ext_resource type="Texture2D" uid="uid://b8r38f8c8qkqq" path="res://assets/sprites/clock_rim.png" id="1_nth4t"]
+[ext_resource type="Texture2D" uid="uid://c7dgbpv2vcv02" path="res://assets/sprites/clock_center.png" id="2_1dyrw"]
+
+[node name="Clock" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jgqwa")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ClockRim" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_nth4t")
+
+[node name="ClockCenter" type="TextureRect" parent="HBoxContainer/ClockRim"]
+z_index = -1
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("2_1dyrw")
+
+[node name="DateTimeDisplay" type="VBoxContainer" parent="HBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+alignment = 1
+
+[node name="Time" type="Label" parent="HBoxContainer/DateTimeDisplay"]
+layout_mode = 2
+text = "Time
+"
+vertical_alignment = 2
+
+[node name="Day" type="Label" parent="HBoxContainer/DateTimeDisplay"]
+layout_mode = 2
+text = "Weekday"

@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://ct4y62u26mkhu"]
+[gd_scene load_steps=10 format=3 uid="uid://ct4y62u26mkhu"]
 
 [ext_resource type="PackedScene" uid="uid://do3s8f6e077gw" path="res://prefabs/bunny.tscn" id="1_0h13k"]
-[ext_resource type="PackedScene" uid="uid://cvnnd7yosb00i" path="res://ui/inventory.tscn" id="1_nw8ng"]
+[ext_resource type="PackedScene" uid="uid://cvnnd7yosb00i" path="res://ui/inventory_ui/inventory.tscn" id="1_nw8ng"]
 [ext_resource type="PackedScene" uid="uid://d34a52kj5ljdd" path="res://prefabs/Player.tscn" id="2_52eap"]
 [ext_resource type="PackedScene" uid="uid://dn8ptif88wr4i" path="res://prefabs/camera.tscn" id="3_6l6es"]
 [ext_resource type="Script" path="res://src/items/ItemManager.gd" id="4_w6ky1"]
 [ext_resource type="PackedScene" uid="uid://cb5i0x0mu2ped" path="res://prefabs/map.tscn" id="5_1a6y7"]
 [ext_resource type="PackedScene" uid="uid://bnqrolr6i6i47" path="res://prefabs/cabin.tscn" id="6_1yj28"]
+[ext_resource type="PackedScene" uid="uid://c7c11p3hlhslx" path="res://ui/clock_ui/clock_ui.tscn" id="8_2anr3"]
 [ext_resource type="Script" path="res://Scenes/PlayerPlacementInitializer.gd" id="8_v58e0"]
 
 [node name="World" type="Node2D"]
@@ -47,7 +48,7 @@ debug_enabled = true
 move_range = 200.0
 
 [node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
-blackboard = NodePath("@Node@17584")
+blackboard = NodePath("@Node@126103")
 
 [node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
 max_ticks = 250
@@ -55,7 +56,7 @@ max_ticks = 250
 [node name="Player" parent="Actors" node_paths=PackedStringArray("inventory") instance=ExtResource("2_52eap")]
 collision_layer = 26
 collision_mask = 13
-inventory = NodePath("../../HUD/QuickBar")
+inventory = NodePath("../../HUD/Inventory")
 
 [node name="Camera2D" parent="Actors/Player" instance=ExtResource("3_6l6es")]
 y_sort_enabled = true
@@ -67,11 +68,21 @@ script = ExtResource("4_w6ky1")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="QuickBar" parent="HUD" instance=ExtResource("1_nw8ng")]
+[node name="Inventory" parent="HUD" instance=ExtResource("1_nw8ng")]
 size_flags_horizontal = 0
 
-[node name="PlayerPlacementInitializer" type="Node" parent="."]
+[node name="MainInventory" parent="HUD/Inventory" index="0"]
+modulate = Color(1, 1, 1, 0.0769231)
+
+[node name="Panel" parent="HUD/Inventory/QuickBar" index="0"]
+offset_top = -14.2857
+offset_bottom = 85.7143
+
+[node name="Clock" parent="HUD" instance=ExtResource("8_2anr3")]
+
+[node name="PlayerPlacementInitializer" type="Node" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("8_v58e0")
+player = NodePath("../Actors/Player")
 
 [connection signal="instantiation_complete" from="Map" to="PlayerPlacementInitializer" method="_on_map_instantiation_complete"]
 [connection signal="velocity_computed" from="Actors/NPCs/Bunny/NPCNavigator" to="Actors/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]
@@ -79,4 +90,4 @@ script = ExtResource("8_v58e0")
 
 [editable path="Map"]
 [editable path="Actors/NPCs/Bunny"]
-[editable path="HUD/QuickBar"]
+[editable path="HUD/Inventory"]

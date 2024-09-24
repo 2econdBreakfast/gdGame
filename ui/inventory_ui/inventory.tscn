@@ -1,15 +1,16 @@
 [gd_scene load_steps=11 format=3 uid="uid://cvnnd7yosb00i"]
 
-[ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory.tres" id="1_yhm3u"]
-[ext_resource type="Script" path="res://ui/inventory.gd" id="2_h1s5k"]
-[ext_resource type="PackedScene" uid="uid://c0rglm6gdou6n" path="res://ui/inventory_cell.tscn" id="3_v6v1u"]
-[ext_resource type="Script" path="res://ui/SelectionManager.gd" id="4_m3flx"]
+[ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory_ui/inventory.tres" id="1_yhm3u"]
+[ext_resource type="Script" path="res://ui/inventory_ui/inventory.gd" id="2_h1s5k"]
+[ext_resource type="PackedScene" uid="uid://c0rglm6gdou6n" path="res://ui/inventory_ui/inventory_cell.tscn" id="3_v6v1u"]
+[ext_resource type="Script" path="res://ui/inventory_ui/SelectionManager.gd" id="4_m3flx"]
 
 [sub_resource type="Theme" id="Theme_j576f"]
 
 [sub_resource type="Animation" id="Animation_mvr2f"]
 resource_name = "main_inv_fade_in"
 length = 0.3
+step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -17,54 +18,18 @@ tracks/0/path = NodePath("MainInventory:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
+"times": PackedFloat32Array(0.01, 0.14),
+"transitions": PackedFloat32Array(1, 3),
+"update": 2,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
-tracks/1/type = "value"
+tracks/1/type = "method"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MainInventory:visible")
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("QuickBar:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("QuickBar:modulate")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0.01),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -72,10 +37,23 @@ tracks/4/keys = {
 "method": &"focus_first_slot"
 }]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("QuickBar/Panel:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.14),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [Vector2(-210, 0), Vector2(-210, -100)]
+}
 
 [sub_resource type="Animation" id="Animation_ptirr"]
 resource_name = "main_inv_fade_out"
 length = 0.3
+step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -83,102 +61,56 @@ tracks/0/path = NodePath("MainInventory:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"times": PackedFloat32Array(0.16),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MainInventory:visible")
+tracks/1/path = NodePath("QuickBar/Panel:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.3),
+"times": PackedFloat32Array(0.17),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("QuickBar:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("QuickBar:modulate")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"update": 2,
+"values": [Vector2(-210, 100)]
 }
 
 [sub_resource type="Animation" id="Animation_6dvu1"]
 resource_name = "quickbar_fade_in"
 length = 0.3
+step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("QuickBar:visible")
+tracks/0/path = NodePath("QuickBar/Panel:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("QuickBar:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+"times": PackedFloat32Array(0.01, 0.1),
+"transitions": PackedFloat32Array(1, 2),
+"update": 2,
+"values": [Vector2(-210, 0), Vector2(-210, -100)]
 }
 
-[sub_resource type="Animation" id="Animation_kallp"]
+[sub_resource type="Animation" id="Animation_a1djt"]
 resource_name = "quickbar_fade_out"
 length = 0.3
+step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("QuickBar:visible")
+tracks/0/path = NodePath("QuickBar/Panel:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("QuickBar:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"times": PackedFloat32Array(0.01, 0.1),
+"transitions": PackedFloat32Array(1, 2),
+"update": 2,
+"values": [Vector2(-210, -100), Vector2(-210, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e0o12"]
@@ -186,7 +118,7 @@ _data = {
 "main_inv_fade_in": SubResource("Animation_mvr2f"),
 "main_inv_fade_out": SubResource("Animation_ptirr"),
 "quickbar_fade_in": SubResource("Animation_6dvu1"),
-"quickbar_fade_out": SubResource("Animation_kallp")
+"quickbar_fade_out": SubResource("Animation_a1djt")
 }
 
 [node name="Inventory" type="Control"]
@@ -203,6 +135,7 @@ theme = SubResource("Theme_j576f")
 script = ExtResource("2_h1s5k")
 
 [node name="MainInventory" type="Control" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(180, 180)
 layout_mode = 1
@@ -233,9 +166,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -202.0
+offset_left = -212.0
 offset_top = -117.5
-offset_right = 202.0
+offset_right = 212.0
 offset_bottom = 117.5
 grow_horizontal = 2
 grow_vertical = 2
@@ -319,7 +252,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="QuickBar" type="Control" parent="."]
-modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -330,7 +262,6 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="Panel" type="Panel" parent="QuickBar"]
-custom_minimum_size = Vector2(420, 74)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -338,8 +269,8 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -210.0
-offset_top = -74.0
 offset_right = 210.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -385,6 +316,9 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("4_m3flx")
+
+[node name="QuickbarDisplayTimer" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="child_order_changed" from="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" to="." method="recache_slots"]
 [connection signal="child_order_changed" from="QuickBar/Panel/CenterContainer/InventorySlots" to="." method="recache_slots"]
