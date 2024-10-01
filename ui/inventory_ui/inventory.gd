@@ -7,15 +7,38 @@ var slots : Array[InventorySlot]
 const max_stack : int = 32
 var focused_slot : InventorySlot
 var grabbed_item : ItemDisplay
+const ACTIVE_SLOT_STYLE : String = "ActiveQuickBarSlot"
+const NORMAL_SLOT_STYLE : String = "InventorySlot"
 
-var quickbar_actions : Array[String] = [
-	"quick_bar_1",
-	"quick_bar_2",
-	"quick_bar_3",
-	"quick_bar_4",
-	"quick_bar_5",
-	"quick_bar_6"
-]
+var active_quick_slot : InventorySlot :
+	set(v):
+		if _active_quick_slot:
+			_active_quick_slot.theme_type_variation = NORMAL_SLOT_STYLE
+		_active_quick_slot = v
+		if _active_quick_slot:
+			_active_quick_slot.theme_type_variation = ACTIVE_SLOT_STYLE
+		elif quick_bar_slots and quick_bar_slots.get_children().size() > 0:
+			active_quick_slot = quick_bar_slots.get_child(0)
+	get:
+		return _active_quick_slot
+
+var active_quick_slot_idx : int:
+	set(v):
+		_active_quick_slot_idx = v % 6
+		active_quick_slot = quick_bar_slots.get_child(_active_quick_slot_idx)
+	get: return _active_quick_slot_idx
+var _active_quick_slot_idx : int
+	
+var _active_quick_slot : InventorySlot
+
+var quickbar_actions : Dictionary = {
+	"quick_bar_1" : 0,
+	"quick_bar_2" : 1,
+	"quick_bar_3" : 2,
+	"quick_bar_4" : 3,
+	"quick_bar_5" : 4,
+	"quick_bar_6" : 5
+}
 
 var displaying : bool
 func _ready():
@@ -23,6 +46,7 @@ func _ready():
 	$MainInventory.visible = false
 	recache_slots()
 	$QuickbarDisplayTimer.timeout.connect(close_quickbar)
+	active_quick_slot = quick_bar_slots.get_child(0)
 
 func _input(event):
 	if Input.is_action_just_pressed("toggle_inventory"):
@@ -33,8 +57,9 @@ func _input(event):
 			displaying = true
 			open_main()
 	else:
-		for action in quickbar_actions:
+		for action in quickbar_actions.keys():
 			if Input.is_action_just_pressed(action):
+				active_quick_slot_idx = quickbar_actions[action]
 				open_quickbar()
 				break
 
@@ -121,5 +146,6 @@ func _can_focus() -> bool:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		return false
 	return true  # Allow focus by other means (keyboard, programmatically)
+	
 func recache_slots():
 	get_all_slots()

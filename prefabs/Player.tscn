@@ -22,7 +22,7 @@ height = 150.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "input_listener", "state_machine")]
 y_sort_enabled = true
-collision_layer = 31
+collision_layer = 2051
 collision_mask = 15
 script = ExtResource("1_fwv86")
 sprite = NodePath("Sprite")

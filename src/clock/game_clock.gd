@@ -15,7 +15,10 @@ var GAME_TIME_SCALE : int:
 	set(v):
 		Engine.time_scale = v
 
-var GAME_MINUTES_PER_REAL_MINUTE : int = 2
+const GAME_MINUTES_PER_TIMER_UPDATE : int = 5
+const TIMER_UPDATE_INTERVAL : int = 5
+
+@onready var timer : Timer = Timer.new()
 
 signal date_time_changed
 signal initialized
@@ -23,6 +26,11 @@ signal initialized
 func _ready():
 	if date_time == null:
 		date_time = TimeOfDay.new(0, 6, 0)
+	timer.one_shot = false
+	timer.timeout.connect(on_game_minute_timer_timeout)
+	timer.wait_time = TIMER_UPDATE_INTERVAL
+	call_deferred("add_child", timer)
+	timer.ready.connect(timer.start)
 
 func _unhandled_input(event):
 	if Input.is_action_pressed("debug_increment_time"):
@@ -33,12 +41,9 @@ func pass_time(game_minutes : int = 0, game_hours : int = 0, game_days : int = 0
 	for i in range(game_minutes + game_hours * 60 + game_days * 24 * 60):
 		increment_minute()
 
-func _on_game_minute_timer_timeout():
-	on_game_minute_timer_timeout()
-
 func on_game_minute_timer_timeout():
 	# one minute has passed in real life, increment that many minutes mult. by engine time scale
-	var minutes_to_pass : int = GAME_TIME_SCALE * GAME_MINUTES_PER_REAL_MINUTE
+	var minutes_to_pass : int = GAME_TIME_SCALE * GAME_MINUTES_PER_TIMER_UPDATE
 	for i in range(minutes_to_pass):
 		increment_minute()
 

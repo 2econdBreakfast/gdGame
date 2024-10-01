@@ -22,6 +22,9 @@ enabled = null
 [node name="BuildingPlacementGenerator" parent="Map/GeneratorModules" index="5"]
 cabin_scene = ExtResource("6_1yj28")
 
+[node name="ChunkArea" parent="Map/ChunkManager" index="0"]
+collision_mask = 2049
+
 [node name="Actors" type="Node2D" parent="."]
 y_sort_enabled = true
 
@@ -48,23 +51,19 @@ debug_enabled = true
 move_range = 200.0
 
 [node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
-blackboard = NodePath("@Node@126103")
+blackboard = NodePath("@Node@27746")
 
 [node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
 max_ticks = 250
 
 [node name="Player" parent="Actors" node_paths=PackedStringArray("inventory") instance=ExtResource("2_52eap")]
-collision_layer = 26
-collision_mask = 13
+collision_mask = 0
 inventory = NodePath("../../HUD/Inventory")
 
 [node name="Camera2D" parent="Actors/Player" instance=ExtResource("3_6l6es")]
 y_sort_enabled = true
 position = Vector2(0, -74)
 position_smoothing_enabled = true
-
-[node name="ItemManager" type="Node2D" parent="Actors"]
-script = ExtResource("4_w6ky1")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -83,6 +82,9 @@ offset_bottom = 85.7143
 [node name="PlayerPlacementInitializer" type="Node" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("8_v58e0")
 player = NodePath("../Actors/Player")
+
+[node name="ItemManager" type="Node2D" parent="."]
+script = ExtResource("4_w6ky1")
 
 [connection signal="instantiation_complete" from="Map" to="PlayerPlacementInitializer" method="_on_map_instantiation_complete"]
 [connection signal="velocity_computed" from="Actors/NPCs/Bunny/NPCNavigator" to="Actors/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]

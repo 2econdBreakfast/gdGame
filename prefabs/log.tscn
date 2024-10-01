@@ -9,7 +9,7 @@ itemData = ExtResource("2_ku5j0")
 
 [node name="ItemSprite" parent="." index="1"]
 texture = ExtResource("3_wxbnu")
-offset = Vector2(0, -1.72724)
+offset = Vector2(0, -5.83897)
 
 [node name="ShadowSprite" parent="ItemSprite" index="0"]
-scale = Vector2(1.21151, 1.20576)
+scale = Vector2(1.23893, 1.21946)

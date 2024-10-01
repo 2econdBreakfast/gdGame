@@ -1,4 +1,5 @@
 class_name Chunk extends Node2D
+
 var map_data : Array[Array] = []
 var object_data : Dictionary = {}
 

@@ -4,7 +4,7 @@ class_name DestructibleObject extends Node2D
 
 signal destroyed
 
-# flag to make sure that destruction signal only sent once
+
 var destruction_signal_sent : bool = false
 
 func on_hit(damage_amount : int):

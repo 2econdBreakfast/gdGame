@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/world_objects/trees/tree.gd" id="1_yhfe0"]
 [ext_resource type="Script" path="res://src/world_objects/drop_object_on_destroy.gd" id="2_fsx2n"]
-[ext_resource type="PackedScene" uid="uid://dn1u2gx15o57r" path="res://prefabs/log.tscn" id="3_rhe4y"]
+[ext_resource type="PackedScene" uid="uid://dn1u2gx15o57r" path="res://prefabs/log.tscn" id="3_caxli"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ww488"]
 radius = 12.0416
@@ -43,6 +43,4 @@ shape = SubResource("RectangleShape2D_7s01k")
 
 [node name="DropObjectOnDestroy" type="Node" parent="."]
 script = ExtResource("2_fsx2n")
-item_prefab = ExtResource("3_rhe4y")
-
-[connection signal="destroyed" from="." to="DropObjectOnDestroy" method="_on_tree_destroyed"]
+item_prefab = ExtResource("3_caxli")

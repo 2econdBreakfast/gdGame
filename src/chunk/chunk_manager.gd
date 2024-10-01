@@ -138,9 +138,12 @@ func instantiate_chunk(chunk_position : Vector2i):
 	if y >= 0 and y < chunk_map.size() and x >= 0 and x < chunk_map[y].size():
 		var chunk = chunk_map[y][x]
 
-		if chunk and is_instance_valid(chunk):
+		if chunk is Chunk and is_instance_valid(chunk):
+			
 			chunk_container.add_child(chunk)
 			tree_instantiator.instantiate(chunk, chunk_position, chunk_actual_size)
+			
+
 			save_chunk(chunk_position)
 			return chunk
 			
@@ -173,7 +176,7 @@ func unload_chunk(chunk_position: Vector2i):
 func load_chunk(chunk_position : Vector2i):
 	var chunk_saved_data : PackedScene = load_from_file_if_exists(chunk_position)
 	var chunk
-	if chunk_saved_data:
+	if chunk_saved_data and chunk_saved_data.can_instantiate():
 		chunk = chunk_saved_data.instantiate()
 		chunk_container.call_deferred("add_child", chunk)
 		print("loading saved chunk at ", chunk_position)
@@ -186,30 +189,36 @@ func load_chunk(chunk_position : Vector2i):
 
 func save_chunk(coordinates : Vector2i):
 	var chunk = chunk_map[coordinates.y][coordinates.x]
-	
+
 	if !chunk:
 		print("No chunk at ", coordinates, ". Couldn't save.")
 		return
 
+	# Ensure all scripts are embedded or paths are correct
 	for node in chunk.get_children(true):
-		node.owner = chunk
-	
+		set_recursive_owner(node, chunk)
+
 	var save_file = PackedScene.new()
 	var status = save_file.pack(chunk)
-	
+
 	if status != OK:
 		print("Failed to pack scene with error code: ", status)
 		return
-	
+
 	var path = get_chunk_path(coordinates)
 	status = ResourceSaver.save(save_file, path)
 	
 	if status != OK:
 		print("Failed to save scene: ", path)
 		return
-
 		
+func set_recursive_owner(node: Node, owner: Node):
+	# Set the owner of the current node
+	node.owner = owner
 
+	# Recursively set the owner for all children
+	for child in node.get_children(true):
+		set_recursive_owner(child, owner)
 func load_from_file_if_exists(coordinates : Vector2i):
 	var chunk_file : PackedScene
 	var path = get_chunk_path(coordinates)
@@ -223,5 +232,16 @@ func load_from_file_if_exists(coordinates : Vector2i):
 		
 		return loaded_scene
 
+func print_chunk_children(chunk):
+	if chunk:
+		print("Chunk instantiated successfully.")
+		print("Children of chunk: ", chunk.get_child_count())
+		for child in chunk.get_children():
+			print("Child: ", child.name, " - Class: ", child.get_class())
+			for child2 in child.get_children():
+				print("		Child: ", child2.name, " - Class: ", child2.get_class())
+				for child3 in child2.get_children():
+					print("			Child: ", child3.name, " - Class: ", child3.get_class())
+					
 func get_chunk_path(coordinates: Vector2i) -> String:
 	return "user://chunks/chunk_%d_%d.tscn" % [coordinates.x, coordinates.y]
