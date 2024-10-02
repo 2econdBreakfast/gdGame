@@ -1,8 +1,8 @@
 extends Control
 
-@onready var time_label : Label = $HBoxContainer/DateTimeDisplay/Time
-@onready var day_label : Label = $HBoxContainer/DateTimeDisplay/Day
-@onready var clock_center : TextureRect = $HBoxContainer/ClockRim/ClockCenter
+@onready var time_label : Label = $MarginContainer/HBoxContainer/DateTimeDisplay/Time
+@onready var day_label : Label = $MarginContainer/HBoxContainer/DateTimeDisplay/Day
+@onready var clock_center : TextureRect = $MarginContainer/HBoxContainer/ClockRim/ClockCenter
 
 const MINUTES_PER_DAY : float = 60.0 * 24.0
 const CLOCK_ROTATION_DEGREES_PER_MINUTE : float = 360.0 / MINUTES_PER_DAY

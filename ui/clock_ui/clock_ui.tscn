@@ -13,34 +13,45 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jgqwa")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -223.0
+offset_bottom = 148.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="ClockRim" type="TextureRect" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="DateTimeDisplay" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+alignment = 1
+
+[node name="Time" type="Label" parent="MarginContainer/HBoxContainer/DateTimeDisplay"]
+layout_mode = 2
+text = "Time
+"
+vertical_alignment = 2
+
+[node name="Day" type="Label" parent="MarginContainer/HBoxContainer/DateTimeDisplay"]
+layout_mode = 2
+text = "Weekday"
+
+[node name="ClockRim" type="TextureRect" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("1_nth4t")
 
-[node name="ClockCenter" type="TextureRect" parent="HBoxContainer/ClockRim"]
+[node name="ClockCenter" type="TextureRect" parent="MarginContainer/HBoxContainer/ClockRim"]
 z_index = -1
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 pivot_offset = Vector2(64, 64)
 texture = ExtResource("2_1dyrw")
-
-[node name="DateTimeDisplay" type="VBoxContainer" parent="HBoxContainer"]
-layout_direction = 2
-layout_mode = 2
-alignment = 1
-
-[node name="Time" type="Label" parent="HBoxContainer/DateTimeDisplay"]
-layout_mode = 2
-text = "Time
-"
-vertical_alignment = 2
-
-[node name="Day" type="Label" parent="HBoxContainer/DateTimeDisplay"]
-layout_mode = 2
-text = "Weekday"

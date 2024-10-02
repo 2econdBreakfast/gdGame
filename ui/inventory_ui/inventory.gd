@@ -1,8 +1,8 @@
 class_name Inventory extends Control
 
 @export var money : int = 0
-@onready var main_inv_slots : Control = $MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots
-@onready var quick_bar_slots : Control = $QuickBar/Panel/CenterContainer/InventorySlots
+@onready var main_inv_slots : Control = $MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots
+@onready var quick_bar_slots : Control = $QuickBar/QuickBarPanel/CenterContainer/InventorySlots
 var slots : Array[InventorySlot]
 const max_stack : int = 32
 var focused_slot : InventorySlot
@@ -74,8 +74,8 @@ func open_main():
 	$AnimationPlayer.play("main_inv_fade_in")
 	
 func close_main():
-	$AnimationPlayer.play("main_inv_fade_out")
-	await $AnimationPlayer.animation_finished
+	$AnimationPlayer.play_backwards("main_inv_fade_in")
+	await  $AnimationPlayer.animation_finished
 	$QuickBar.visible = false
 	$MainInventory.visible = false
 	

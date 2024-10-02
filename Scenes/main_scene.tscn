@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ct4y62u26mkhu"]
+[gd_scene load_steps=13 format=3 uid="uid://ct4y62u26mkhu"]
 
 [ext_resource type="PackedScene" uid="uid://do3s8f6e077gw" path="res://prefabs/bunny.tscn" id="1_0h13k"]
 [ext_resource type="PackedScene" uid="uid://cvnnd7yosb00i" path="res://ui/inventory_ui/inventory.tscn" id="1_nw8ng"]
@@ -8,7 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://cb5i0x0mu2ped" path="res://prefabs/map.tscn" id="5_1a6y7"]
 [ext_resource type="PackedScene" uid="uid://bnqrolr6i6i47" path="res://prefabs/cabin.tscn" id="6_1yj28"]
 [ext_resource type="PackedScene" uid="uid://c7c11p3hlhslx" path="res://ui/clock_ui/clock_ui.tscn" id="8_2anr3"]
+[ext_resource type="PackedScene" uid="uid://c1m7qrlyslg0a" path="res://ui/health_ui.tscn" id="8_6gvkr"]
 [ext_resource type="Script" path="res://Scenes/PlayerPlacementInitializer.gd" id="8_v58e0"]
+[ext_resource type="PackedScene" uid="uid://cjemwb18ah4rb" path="res://ui/money_ui.tscn" id="9_3q0iv"]
+[ext_resource type="Script" path="res://debug/debug_input_listener.gd" id="12_aujmj"]
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
@@ -16,14 +19,14 @@ y_sort_enabled = true
 [node name="Map" parent="." instance=ExtResource("5_1a6y7")]
 y_sort_enabled = true
 
+[node name="ChunkArea" parent="Map/ChunkManager" index="0"]
+collision_mask = 2049
+
 [node name="TerrainGenerator" parent="Map/GeneratorModules" index="4"]
 enabled = null
 
 [node name="BuildingPlacementGenerator" parent="Map/GeneratorModules" index="5"]
 cabin_scene = ExtResource("6_1yj28")
-
-[node name="ChunkArea" parent="Map/ChunkManager" index="0"]
-collision_mask = 2049
 
 [node name="Actors" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -51,7 +54,7 @@ debug_enabled = true
 move_range = 200.0
 
 [node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
-blackboard = NodePath("@Node@27746")
+blackboard = NodePath("@Node@66951")
 
 [node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
 max_ticks = 250
@@ -70,14 +73,28 @@ position_smoothing_enabled = true
 [node name="Inventory" parent="HUD" instance=ExtResource("1_nw8ng")]
 size_flags_horizontal = 0
 
-[node name="MainInventory" parent="HUD/Inventory" index="0"]
-modulate = Color(1, 1, 1, 0.0769231)
-
-[node name="Panel" parent="HUD/Inventory/QuickBar" index="0"]
-offset_top = -14.2857
-offset_bottom = 85.7143
-
 [node name="Clock" parent="HUD" instance=ExtResource("8_2anr3")]
+
+[node name="PlayerInfo" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/PlayerInfo"]
+layout_mode = 1
+offset_right = 120.0
+offset_bottom = 120.0
+
+[node name="Health" parent="HUD/PlayerInfo/VBoxContainer" instance=ExtResource("8_6gvkr")]
+layout_mode = 2
+health_bar_scale_multiplier = 2.0
+
+[node name="Money" parent="HUD/PlayerInfo/VBoxContainer" instance=ExtResource("9_3q0iv")]
+layout_mode = 2
+scale_multiplier = 2.0
 
 [node name="PlayerPlacementInitializer" type="Node" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("8_v58e0")
@@ -86,6 +103,11 @@ player = NodePath("../Actors/Player")
 [node name="ItemManager" type="Node2D" parent="."]
 script = ExtResource("4_w6ky1")
 
+[node name="Debug" type="Node" parent="."]
+
+[node name="DebugInputListener" type="Node" parent="Debug"]
+script = ExtResource("12_aujmj")
+
 [connection signal="instantiation_complete" from="Map" to="PlayerPlacementInitializer" method="_on_map_instantiation_complete"]
 [connection signal="velocity_computed" from="Actors/NPCs/Bunny/NPCNavigator" to="Actors/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]
 [connection signal="timeout" from="Actors/NPCs/Bunny/NPCNavigator/path_recalculation_timer" to="Actors/NPCs/Bunny/NPCNavigator" method="_on_recalculation_timer_timeout"]
@@ -93,3 +115,4 @@ script = ExtResource("4_w6ky1")
 [editable path="Map"]
 [editable path="Actors/NPCs/Bunny"]
 [editable path="HUD/Inventory"]
+[editable path="HUD/Clock"]

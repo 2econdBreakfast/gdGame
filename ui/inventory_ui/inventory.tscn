@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cvnnd7yosb00i"]
+[gd_scene load_steps=12 format=3 uid="uid://cvnnd7yosb00i"]
 
 [ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory_ui/inventory.tres" id="1_yhm3u"]
 [ext_resource type="Script" path="res://ui/inventory_ui/inventory.gd" id="2_h1s5k"]
@@ -9,7 +9,7 @@
 
 [sub_resource type="Animation" id="Animation_mvr2f"]
 resource_name = "main_inv_fade_in"
-length = 0.3
+length = 0.1
 step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -18,7 +18,7 @@ tracks/0/path = NodePath("MainInventory:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.01, 0.14),
+"times": PackedFloat32Array(0.01, 0.1),
 "transitions": PackedFloat32Array(1, 3),
 "update": 2,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -40,11 +40,11 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("QuickBar/Panel:position")
+tracks/2/path = NodePath("QuickBar/QuickBarPanel:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.14),
+"times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 2,
 "values": [Vector2(-210, 0), Vector2(-210, -100)]
@@ -52,7 +52,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_ptirr"]
 resource_name = "main_inv_fade_out"
-length = 0.3
+length = 0.1
 step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -61,19 +61,19 @@ tracks/0/path = NodePath("MainInventory:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.16),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 2,
-"values": [Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("QuickBar/Panel:position")
+tracks/1/path = NodePath("QuickBar/QuickBarPanel:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.17),
+"times": PackedFloat32Array(0.1),
 "transitions": PackedFloat32Array(1),
 "update": 2,
 "values": [Vector2(-210, 100)]
@@ -81,12 +81,12 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_6dvu1"]
 resource_name = "quickbar_fade_in"
-length = 0.3
+length = 0.1
 step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("QuickBar/Panel:position")
+tracks/0/path = NodePath("QuickBar/QuickBarPanel:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -98,12 +98,12 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_a1djt"]
 resource_name = "quickbar_fade_out"
-length = 0.3
+length = 0.1
 step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("QuickBar/Panel:position")
+tracks/0/path = NodePath("QuickBar/QuickBarPanel:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -113,8 +113,84 @@ tracks/0/keys = {
 "values": [Vector2(-210, -100), Vector2(-210, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_4uo3y"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainInventory/MainInventoryPanel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainInventory:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("QuickBar:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("QuickBar/QuickBarPanel:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-210, -100)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("MainInventory/MainInventoryPanel:anchors_preset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [15]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("MainInventory/MainInventoryPanel:layout_mode")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e0o12"]
 _data = {
+"RESET": SubResource("Animation_4uo3y"),
 "main_inv_fade_in": SubResource("Animation_mvr2f"),
 "main_inv_fade_out": SubResource("Animation_ptirr"),
 "quickbar_fade_in": SubResource("Animation_6dvu1"),
@@ -135,8 +211,6 @@ theme = SubResource("Theme_j576f")
 script = ExtResource("2_h1s5k")
 
 [node name="MainInventory" type="Control" parent="."]
-visible = false
-modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(180, 180)
 layout_mode = 1
 anchors_preset = 8
@@ -151,7 +225,7 @@ offset_bottom = 144.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="MainInventory"]
+[node name="MainInventoryPanel" type="Panel" parent="MainInventory"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -159,7 +233,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MainInventory/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="MainInventory/MainInventoryPanel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -177,78 +251,78 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 0
 
-[node name="VSplitContainer" type="VSplitContainer" parent="MainInventory/Panel/MarginContainer"]
+[node name="VSplitContainer" type="VSplitContainer" parent="MainInventory/MainInventoryPanel/MarginContainer"]
 layout_mode = 2
 
-[node name="CenterContainer2" type="CenterContainer" parent="MainInventory/Panel/MarginContainer/VSplitContainer"]
+[node name="CenterContainer2" type="CenterContainer" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer2"]
+[node name="Label" type="Label" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer2"]
 layout_mode = 2
 text = "Backpack"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="MainInventory/Panel/MarginContainer/VSplitContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer"]
 layout_mode = 2
 
-[node name="InventorySlots" type="GridContainer" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer"]
+[node name="InventorySlots" type="GridContainer" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer"]
 layout_mode = 2
 theme = ExtResource("1_yhm3u")
 columns = 6
 
-[node name="InventorySlot" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot2" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot2" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot3" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot3" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot4" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot4" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot5" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot5" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot6" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot6" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot7" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot7" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot8" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot8" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot9" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot9" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot10" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot10" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot11" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot11" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot12" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot12" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot13" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot13" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot14" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot14" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot15" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot15" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot16" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot16" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot17" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot17" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot18" parent="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot18" parent="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
 [node name="QuickBar" type="Control" parent="."]
@@ -261,7 +335,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="Panel" type="Panel" parent="QuickBar"]
+[node name="QuickBarPanel" type="Panel" parent="QuickBar"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -269,12 +343,12 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -210.0
+offset_top = -100.0
 offset_right = 210.0
-offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="CenterContainer" type="CenterContainer" parent="QuickBar/Panel"]
+[node name="CenterContainer" type="CenterContainer" parent="QuickBar/QuickBarPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -282,28 +356,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="InventorySlots" type="GridContainer" parent="QuickBar/Panel/CenterContainer"]
+[node name="InventorySlots" type="GridContainer" parent="QuickBar/QuickBarPanel/CenterContainer"]
 layout_direction = 2
 layout_mode = 2
 theme = ExtResource("1_yhm3u")
 columns = 6
 
-[node name="InventorySlot" parent="QuickBar/Panel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot" parent="QuickBar/QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot2" parent="QuickBar/Panel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot2" parent="QuickBar/QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot3" parent="QuickBar/Panel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot3" parent="QuickBar/QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot4" parent="QuickBar/Panel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot4" parent="QuickBar/QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot5" parent="QuickBar/Panel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot5" parent="QuickBar/QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
-[node name="InventorySlot6" parent="QuickBar/Panel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
+[node name="InventorySlot6" parent="QuickBar/QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("3_v6v1u")]
 layout_mode = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -320,5 +394,5 @@ script = ExtResource("4_m3flx")
 [node name="QuickbarDisplayTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="child_order_changed" from="MainInventory/Panel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" to="." method="recache_slots"]
-[connection signal="child_order_changed" from="QuickBar/Panel/CenterContainer/InventorySlots" to="." method="recache_slots"]
+[connection signal="child_order_changed" from="MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots" to="." method="recache_slots"]
+[connection signal="child_order_changed" from="QuickBar/QuickBarPanel/CenterContainer/InventorySlots" to="." method="recache_slots"]

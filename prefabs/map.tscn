@@ -32,32 +32,6 @@ script = ExtResource("1_aqgwl")
 map_size = Vector2i(256, 256)
 max_threads = 8
 
-[node name="GeneratorModules" type="Node" parent="."]
-
-[node name="MapDataInitializer" type="Node" parent="GeneratorModules"]
-script = ExtResource("2_cwjxr")
-
-[node name="HeightmapGenerator" type="Node" parent="GeneratorModules"]
-script = ExtResource("2_yoysw")
-n1 = ExtResource("4_s3nf3")
-
-[node name="RainfallGenerator" type="Node" parent="GeneratorModules"]
-script = ExtResource("3_1gd7e")
-n = ExtResource("6_wavc3")
-
-[node name="BiomeGenerator" type="Node" parent="GeneratorModules"]
-script = ExtResource("5_5baa4")
-noise = ExtResource("8_8kx8k")
-
-[node name="TerrainGenerator" type="Node" parent="GeneratorModules"]
-script = ExtResource("6_r6hy4")
-
-[node name="BuildingPlacementGenerator" type="Node" parent="GeneratorModules"]
-script = ExtResource("10_n26en")
-
-[node name="TreeGenerator" type="Node" parent="GeneratorModules"]
-script = ExtResource("6_165s7")
-
 [node name="InstantiatorModules" type="Node" parent="."]
 
 [node name="TerrainInstantiator" type="Node" parent="InstantiatorModules"]
@@ -105,6 +79,32 @@ shape = SubResource("RectangleShape2D_oygf2")
 [node name="ChunkTreeInstantiator" type="Node" parent="ChunkManager"]
 script = ExtResource("14_aj4fj")
 tree_prototypes = Array[PackedScene]([ExtResource("16_gx5r8"), ExtResource("17_2cjjc"), ExtResource("18_0jd0a"), ExtResource("19_182hi")])
+
+[node name="GeneratorModules" type="Node" parent="."]
+
+[node name="MapDataInitializer" type="Node" parent="GeneratorModules"]
+script = ExtResource("2_cwjxr")
+
+[node name="HeightmapGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("2_yoysw")
+n1 = ExtResource("4_s3nf3")
+
+[node name="RainfallGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("3_1gd7e")
+n = ExtResource("6_wavc3")
+
+[node name="BiomeGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("5_5baa4")
+noise = ExtResource("8_8kx8k")
+
+[node name="TerrainGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("6_r6hy4")
+
+[node name="BuildingPlacementGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("10_n26en")
+
+[node name="TreeGenerator" type="Node" parent="GeneratorModules"]
+script = ExtResource("6_165s7")
 
 [node name="Chunks" type="Node2D" parent="."]
 y_sort_enabled = true

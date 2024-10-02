@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1m7qrlyslg0a"]
+
+[ext_resource type="Script" path="res://ui/health_bar.gd" id="1_byjbn"]
+[ext_resource type="Theme" uid="uid://cmhy6gb7fn1i8" path="res://ui/health_bar_theme.tres" id="1_c8jgo"]
+[ext_resource type="Texture2D" uid="uid://brmoasc414upt" path="res://assets/sprites/health.png" id="2_mxpdq"]
+
+[node name="Health" type="HSplitContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+theme = ExtResource("1_c8jgo")
+script = ExtResource("1_byjbn")
+
+[node name="HeartIcon" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_mxpdq")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="HealthBar" type="ProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -6.0
+offset_right = 4.0
+offset_bottom = 6.0
+grow_vertical = 2
+scale = Vector2(1.01167, 1)
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("1_c8jgo")
+theme_type_variation = &"HealthBar"
+show_percentage = false

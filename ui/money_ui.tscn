@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjemwb18ah4rb"]
+
+[ext_resource type="Script" path="res://ui/money_ui.gd" id="1_5nvoc"]
+[ext_resource type="Texture2D" uid="uid://deatcnmfphd8x" path="res://assets/sprites/coin.png" id="1_nfbyy"]
+[ext_resource type="LabelSettings" uid="uid://7qa7y0k1vpkl" path="res://ui/money_ui_label_settings.tres" id="3_itamh"]
+
+[node name="Money" type="HSplitContainer"]
+script = ExtResource("1_5nvoc")
+
+[node name="CoinIcon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("1_nfbyy")
+expand_mode = 2
+
+[node name="MoneyAmount" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+text = "0"
+label_settings = ExtResource("3_itamh")
+vertical_alignment = 1
