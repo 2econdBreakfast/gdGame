@@ -134,11 +134,12 @@ func find_slot_for_item(new_itemData : ItemData) -> InventorySlot:
 	
 func get_all_slots() -> Array[InventorySlot]:
 	slots = []
-	var to_check = main_inv_slots.get_children()
-	to_check.append_array(quick_bar_slots.get_children())
-	for node in to_check:
-		if node is InventorySlot:
-			slots.append(node)
+	if main_inv_slots != null and quick_bar_slots != null:
+		var to_check = main_inv_slots.get_children()
+		to_check.append_array(quick_bar_slots.get_children())
+		for node in to_check:
+			if node is InventorySlot:
+				slots.append(node)
 	return slots
 
 # Prevent the control from focusing when clicked but allow programmatic focus

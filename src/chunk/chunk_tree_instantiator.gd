@@ -22,5 +22,5 @@ func instantiate(chunk : Chunk, chunk_position : Vector2i, chunk_size : Vector2 
 		tree.global_position = calculate_tree_position(position, chunk_position, chunk_size)
 		chunk.call_deferred("add_child", tree)
 
-func calculate_tree_position(tree_grid_position, chunk_position, chunk_size) -> Vector2:
+func calculate_tree_position(tree_grid_position : Vector2i, chunk_position : Vector2i, chunk_size : Vector2) -> Vector2:
 	return Vector2(tree_grid_position) * tree_tile_size + Vector2(randi_range(-32, 32), randi_range(-32, 32)) + Vector2(chunk_position) * chunk_size

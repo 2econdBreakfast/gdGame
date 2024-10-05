@@ -13,4 +13,3 @@ func add_object(obj: PackedScene, pos: Vector2):
 	var instance = obj.instance()
 	instance.position = pos
 	add_child(instance)
-
