@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjt3qbafysqi8"]
+
+[ext_resource type="LabelSettings" uid="uid://7qa7y0k1vpkl" path="res://ui/money_ui_label_settings.tres" id="1_d5bln"]
+
+[node name="MoneyAmount" type="Label"]
+size_flags_vertical = 1
+text = "0"
+label_settings = ExtResource("1_d5bln")
+vertical_alignment = 1

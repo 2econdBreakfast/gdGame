@@ -5,7 +5,10 @@
 [ext_resource type="LabelSettings" uid="uid://7qa7y0k1vpkl" path="res://ui/money_ui_label_settings.tres" id="3_itamh"]
 
 [node name="Money" type="HSplitContainer"]
+offset_right = 54.0
+offset_bottom = 32.0
 script = ExtResource("1_5nvoc")
+scale_multiplier = 1.5
 
 [node name="CoinIcon" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(32, 32)

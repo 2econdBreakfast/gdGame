@@ -21,7 +21,7 @@ func _ready():
 	
 func _on_health_changed():
 	health_bar.max_value = CHARACTER_DATA.max_health
-	health_bar.value = (float(CHARACTER_DATA.cur_health) / float(CHARACTER_DATA.max_health)) * 100.0
+	health_bar.value = (float(CHARACTER_DATA.health) / float(CHARACTER_DATA.max_health)) * 100.0
 
 
 func update_scale():

@@ -25,7 +25,7 @@ func _on_money_changed():
 	_update_money_amount_label()
 	
 func _update_money_amount_label():
-	amount_label.text = str(CHARACTER_DATA.cur_money)
+	amount_label.text = str(CHARACTER_DATA.money)
 
 func _update_scale():
 	if amount_label:

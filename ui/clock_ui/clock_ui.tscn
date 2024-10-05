@@ -1,8 +1,158 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7c11p3hlhslx"]
+[gd_scene load_steps=8 format=3 uid="uid://c7c11p3hlhslx"]
 
 [ext_resource type="Script" path="res://ui/clock_ui/clock_ui.gd" id="1_jgqwa"]
 [ext_resource type="Texture2D" uid="uid://b8r38f8c8qkqq" path="res://assets/sprites/clock_rim.png" id="1_nth4t"]
 [ext_resource type="Texture2D" uid="uid://c7dgbpv2vcv02" path="res://assets/sprites/clock_center.png" id="2_1dyrw"]
+
+[sub_resource type="Animation" id="Animation_deyp6"]
+resource_name = "reset"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer:layout_mode")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HBoxContainer:anchors_preset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HBoxContainer:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(203, 128)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HBoxContainer:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(949, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("HBoxContainer:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("HBoxContainer:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("HBoxContainer:pivot_offset")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("HBoxContainer:custom_minimum_size")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("HBoxContainer:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_mvqwr"]
+resource_name = "hide"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ua3si"]
+resource_name = "show"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_88ndv"]
+_data = {
+"RESET": SubResource("Animation_deyp6"),
+"hide": SubResource("Animation_mvqwr"),
+"show": SubResource("Animation_ua3si")
+}
 
 [node name="Clock" type="Control"]
 layout_mode = 3
@@ -13,45 +163,44 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jgqwa")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -223.0
-offset_bottom = 148.0
+offset_left = 949.0
+offset_right = 1152.0
+offset_bottom = 128.0
 grow_horizontal = 0
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-
-[node name="DateTimeDisplay" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="DateTimeDisplay" type="VBoxContainer" parent="HBoxContainer"]
 layout_direction = 2
 layout_mode = 2
 alignment = 1
 
-[node name="Time" type="Label" parent="MarginContainer/HBoxContainer/DateTimeDisplay"]
+[node name="Time" type="Label" parent="HBoxContainer/DateTimeDisplay"]
 layout_mode = 2
 text = "Time
 "
 vertical_alignment = 2
 
-[node name="Day" type="Label" parent="MarginContainer/HBoxContainer/DateTimeDisplay"]
+[node name="Day" type="Label" parent="HBoxContainer/DateTimeDisplay"]
 layout_mode = 2
 text = "Weekday"
 
-[node name="ClockRim" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+[node name="ClockRim" type="TextureRect" parent="HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("1_nth4t")
 
-[node name="ClockCenter" type="TextureRect" parent="MarginContainer/HBoxContainer/ClockRim"]
+[node name="ClockCenter" type="TextureRect" parent="HBoxContainer/ClockRim"]
 z_index = -1
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 pivot_offset = Vector2(64, 64)
 texture = ExtResource("2_1dyrw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_88ndv")
+}

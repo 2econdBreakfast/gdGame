@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ct4y62u26mkhu"]
+[gd_scene load_steps=14 format=3 uid="uid://ct4y62u26mkhu"]
 
 [ext_resource type="PackedScene" uid="uid://do3s8f6e077gw" path="res://prefabs/bunny.tscn" id="1_0h13k"]
 [ext_resource type="PackedScene" uid="uid://cvnnd7yosb00i" path="res://ui/inventory_ui/inventory.tscn" id="1_nw8ng"]
@@ -7,10 +7,11 @@
 [ext_resource type="Script" path="res://src/items/ItemManager.gd" id="4_w6ky1"]
 [ext_resource type="PackedScene" uid="uid://cb5i0x0mu2ped" path="res://prefabs/map.tscn" id="5_1a6y7"]
 [ext_resource type="PackedScene" uid="uid://bnqrolr6i6i47" path="res://prefabs/cabin.tscn" id="6_1yj28"]
+[ext_resource type="Script" path="res://ui/UI_Controller.gd" id="6_mb180"]
+[ext_resource type="Script" path="res://ui/hud_margin_controller.gd" id="7_m6074"]
 [ext_resource type="PackedScene" uid="uid://c7c11p3hlhslx" path="res://ui/clock_ui/clock_ui.tscn" id="8_2anr3"]
-[ext_resource type="PackedScene" uid="uid://c1m7qrlyslg0a" path="res://ui/health_ui.tscn" id="8_6gvkr"]
 [ext_resource type="Script" path="res://Scenes/PlayerPlacementInitializer.gd" id="8_v58e0"]
-[ext_resource type="PackedScene" uid="uid://cjemwb18ah4rb" path="res://ui/money_ui.tscn" id="9_3q0iv"]
+[ext_resource type="PackedScene" uid="uid://cslsrrshjk2jh" path="res://ui/player_info.tscn" id="9_0h6qk"]
 [ext_resource type="Script" path="res://debug/debug_input_listener.gd" id="12_aujmj"]
 
 [node name="World" type="Node2D"]
@@ -54,47 +55,62 @@ debug_enabled = true
 move_range = 200.0
 
 [node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
-blackboard = NodePath("@Node@66951")
+blackboard = NodePath("@Node@17587")
 
 [node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
 max_ticks = 250
 
 [node name="Player" parent="Actors" node_paths=PackedStringArray("inventory") instance=ExtResource("2_52eap")]
 collision_mask = 0
-inventory = NodePath("../../HUD/Inventory")
+inventory = NodePath("../../UI/Inventory")
 
 [node name="Camera2D" parent="Actors/Player" instance=ExtResource("3_6l6es")]
 y_sort_enabled = true
 position = Vector2(0, -74)
 position_smoothing_enabled = true
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("6_mb180")
 
-[node name="Inventory" parent="HUD" instance=ExtResource("1_nw8ng")]
+[node name="Inventory" parent="UI" instance=ExtResource("1_nw8ng")]
 size_flags_horizontal = 0
 
-[node name="Clock" parent="HUD" instance=ExtResource("8_2anr3")]
-
-[node name="PlayerInfo" type="Control" parent="HUD"]
-layout_mode = 3
+[node name="HUD" type="MarginContainer" parent="UI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("7_m6074")
+margin_percentage = 5.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/PlayerInfo"]
-layout_mode = 1
-offset_right = 120.0
-offset_bottom = 120.0
-
-[node name="Health" parent="HUD/PlayerInfo/VBoxContainer" instance=ExtResource("8_6gvkr")]
+[node name="PlayerInfo" parent="UI/HUD" instance=ExtResource("9_0h6qk")]
 layout_mode = 2
-health_bar_scale_multiplier = 2.0
 
-[node name="Money" parent="HUD/PlayerInfo/VBoxContainer" instance=ExtResource("9_3q0iv")]
+[node name="VBoxContainer" parent="UI/HUD/PlayerInfo" index="0"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = 0.0
+offset_bottom = 104.0
+grow_horizontal = 2
+
+[node name="Hunger" parent="UI/HUD/PlayerInfo/VBoxContainer" index="2"]
+split_offset = 43
+
+[node name="AspectRatioContainer" parent="UI/HUD/PlayerInfo/VBoxContainer/Hunger" index="0"]
+alignment_horizontal = 0
+alignment_vertical = 0
+
+[node name="Clock" parent="UI/HUD" instance=ExtResource("8_2anr3")]
 layout_mode = 2
-scale_multiplier = 2.0
+
+[node name="HBoxContainer" parent="UI/HUD/Clock" index="0"]
+offset_left = -163.0
+offset_right = 40.0
 
 [node name="PlayerPlacementInitializer" type="Node" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("8_v58e0")
@@ -114,5 +130,8 @@ script = ExtResource("12_aujmj")
 
 [editable path="Map"]
 [editable path="Actors/NPCs/Bunny"]
-[editable path="HUD/Inventory"]
-[editable path="HUD/Clock"]
+[editable path="UI/Inventory"]
+[editable path="UI/HUD/PlayerInfo"]
+[editable path="UI/HUD/PlayerInfo/VBoxContainer/Money"]
+[editable path="UI/HUD/PlayerInfo/VBoxContainer/Hunger"]
+[editable path="UI/HUD/Clock"]
