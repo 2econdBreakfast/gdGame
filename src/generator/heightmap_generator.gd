@@ -2,10 +2,10 @@ class_name HeightmapGenerator extends GeneratorModule
 
 @export var n1 = FastNoiseLite.new()
 
-func generate(generation_cache : Dictionary):
-	var width : int = generation_cache.get("width")
-	var height : int = generation_cache.get("height")
-	var map_data : Array[Array] = generation_cache.get("map_data")
+func generate():
+	var width : int = WORLD_DATA.cache.get("width")
+	var height : int = WORLD_DATA.cache.get("height")
+	var map_data : Array[Array] = WORLD_DATA.cache.get("map_data")
 	
 	randomize()
 	n1.seed = randi()

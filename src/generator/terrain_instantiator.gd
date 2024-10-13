@@ -1,8 +1,8 @@
 class_name TerrainInstantiator extends InstantiatorModule
 
-func instantiate(generation_cache : Dictionary):
-	var map_data : Array[Array] = generation_cache["map_data"]
-	var tilemap : TileMap = generation_cache["terrain_tilemap"]
+func instantiate():
+	var map_data : Array[Array] = WORLD_DATA.cache["map_data"]
+	var tilemap : TileMap = WORLD_DATA.terrain_tilemap
 	
 	tilemap.clear()
 	for y in range(map_data.size()):

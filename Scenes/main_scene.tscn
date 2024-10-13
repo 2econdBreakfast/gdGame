@@ -23,42 +23,16 @@ y_sort_enabled = true
 [node name="ChunkArea" parent="Map/ChunkManager" index="0"]
 collision_mask = 2049
 
-[node name="TerrainGenerator" parent="Map/GeneratorModules" index="4"]
-enabled = null
-
 [node name="BuildingPlacementGenerator" parent="Map/GeneratorModules" index="5"]
 cabin_scene = ExtResource("6_1yj28")
 
+[node name="TreeGenerator" parent="Map/GeneratorModules" index="6"]
+rainfall_weight = null
+terrain_type_weight = null
+enabled = null
+
 [node name="Actors" type="Node2D" parent="."]
 y_sort_enabled = true
-
-[node name="NPCs" type="Node2D" parent="Actors"]
-y_sort_enabled = true
-
-[node name="Bunny" parent="Actors/NPCs" instance=ExtResource("1_0h13k")]
-position = Vector2(615, 446)
-collision_layer = 0
-collision_mask = 0
-debug_behavior_tree = true
-
-[node name="AnimatedSprite2D" parent="Actors/NPCs/Bunny" index="0"]
-animation = &"move_right"
-
-[node name="NPCNavigator" parent="Actors/NPCs/Bunny" index="2"]
-target_desired_distance = 20.0
-navigation_layers = 1
-avoidance_layers = 0
-avoidance_mask = 7
-debug_enabled = true
-
-[node name="NPCData" parent="Actors/NPCs/Bunny" index="5"]
-move_range = 200.0
-
-[node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
-blackboard = NodePath("@Node@17587")
-
-[node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
-max_ticks = 250
 
 [node name="Player" parent="Actors" node_paths=PackedStringArray("inventory") instance=ExtResource("2_52eap")]
 collision_mask = 0
@@ -108,9 +82,33 @@ alignment_vertical = 0
 [node name="Clock" parent="UI/HUD" instance=ExtResource("8_2anr3")]
 layout_mode = 2
 
-[node name="HBoxContainer" parent="UI/HUD/Clock" index="0"]
-offset_left = -163.0
-offset_right = 40.0
+[node name="NPCs" type="Node2D" parent="UI"]
+y_sort_enabled = true
+
+[node name="Bunny" parent="UI/NPCs" instance=ExtResource("1_0h13k")]
+position = Vector2(615, 446)
+collision_layer = 0
+collision_mask = 0
+debug_behavior_tree = true
+
+[node name="AnimatedSprite2D" parent="UI/NPCs/Bunny" index="0"]
+animation = &"move_right"
+
+[node name="NPCNavigator" parent="UI/NPCs/Bunny" index="2"]
+target_desired_distance = 20.0
+navigation_layers = 1
+avoidance_layers = 0
+avoidance_mask = 7
+debug_enabled = true
+
+[node name="NPCData" parent="UI/NPCs/Bunny" index="5"]
+move_range = 200.0
+
+[node name="BehaviorTree" parent="UI/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
+blackboard = NodePath("@Node@17587")
+
+[node name="InitializeIdleTimer" parent="UI/NPCs/Bunny/BehaviorTree/Main" index="0"]
+max_ticks = 250
 
 [node name="PlayerPlacementInitializer" type="Node" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("8_v58e0")
@@ -125,13 +123,13 @@ script = ExtResource("4_w6ky1")
 script = ExtResource("12_aujmj")
 
 [connection signal="instantiation_complete" from="Map" to="PlayerPlacementInitializer" method="_on_map_instantiation_complete"]
-[connection signal="velocity_computed" from="Actors/NPCs/Bunny/NPCNavigator" to="Actors/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]
-[connection signal="timeout" from="Actors/NPCs/Bunny/NPCNavigator/path_recalculation_timer" to="Actors/NPCs/Bunny/NPCNavigator" method="_on_recalculation_timer_timeout"]
+[connection signal="velocity_computed" from="UI/NPCs/Bunny/NPCNavigator" to="UI/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]
+[connection signal="timeout" from="UI/NPCs/Bunny/NPCNavigator/path_recalculation_timer" to="UI/NPCs/Bunny/NPCNavigator" method="_on_recalculation_timer_timeout"]
 
 [editable path="Map"]
-[editable path="Actors/NPCs/Bunny"]
 [editable path="UI/Inventory"]
 [editable path="UI/HUD/PlayerInfo"]
 [editable path="UI/HUD/PlayerInfo/VBoxContainer/Money"]
 [editable path="UI/HUD/PlayerInfo/VBoxContainer/Hunger"]
 [editable path="UI/HUD/Clock"]
+[editable path="UI/NPCs/Bunny"]

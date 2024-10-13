@@ -7,15 +7,13 @@ class_name BiomeGenerator extends GeneratorModule
 @export var max_lakes = 1
 
 
-func generate(generation_cache : Dictionary):
-	var width = generation_cache["width"]
-	var height = generation_cache["height"]
-	var map_data = generation_cache["map_data"]
+func generate():
+	var width = WORLD_DATA.cache["width"]
+	var height = WORLD_DATA.cache["height"]
+	var map_data = WORLD_DATA.cache["map_data"]
 
 	var biome_polys = get_all_polygons(noise, width, height)
 	assign_biomes(biome_polys, map_data, width, height)
-
-	generation_cache["biomes"] = biome_polys
 
 func assign_biomes(polys: Array, map_data : Array[Array], width: int, height: int):
 	

@@ -13,8 +13,8 @@ static var FOREST : BiomeData = BiomeData.new(
 	"Forest",
 	Globals.TerrainTileType.FOREST_GRASS,
 	[
-		Globals.TreeID.PINE,
-		Globals.TreeID.DEAD
+		Globals.TreeType.PINE,
+		Globals.TreeType.DEAD
 	],
 	0.7
 )
@@ -24,7 +24,7 @@ static var PLAINS : BiomeData = BiomeData.new(
 	"Forest",
 	Globals.TerrainTileType.GRASS,
 	[
-		Globals.TreeID.OAK
+		Globals.TreeType.OAK
 	],
 	0.05
 )
@@ -34,7 +34,7 @@ static var BEACH : BiomeData = BiomeData.new(
 	"Forest",
 	Globals.TerrainTileType.SAND,
 	[
-		Globals.TreeID.PALM
+		Globals.TreeType.PALM
 	],
 	0.1
 )

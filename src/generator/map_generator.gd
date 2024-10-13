@@ -13,7 +13,6 @@ class_name MapGenerator
 @onready var terrain_tilemap : TileMap = get_node("Tilemaps/TerrainTilemap")
 @onready var chunk_manager : ChunkManager = get_node("ChunkManager")
 
-var generation_cache : Dictionary = {} # store any data needed for generation
 
 signal generation_started
 signal generation_complete
@@ -33,20 +32,20 @@ func generate_and_instantiate():
 		print("MapGenerator: instantiating...")
 		Debug.Memory.print_mem_usage("Memory usage after generation")
 	
-	generation_cache["width"] = map_size.x
-	generation_cache["height"] = map_size.y
-	generation_cache["max_threads"] = max_threads
-	generation_cache["terrain_tilemap"] = terrain_tilemap
+	WORLD_DATA.cache["width"] = map_size.x
+	WORLD_DATA.cache["height"] = map_size.y
+	WORLD_DATA.cache["max_threads"] = max_threads
+	WORLD_DATA.terrain_tilemap = terrain_tilemap
 	for module : GeneratorModule in generator_modules:
 		if module.enabled:
-			module.generate(generation_cache)
-	
+			module.generate()
 
 	for module : InstantiatorModule in instantiator_modules:
 		if module.enabled:
-			module.instantiate(generation_cache)
+			module.instantiate()
 		
-	chunk_manager.initialize(generation_cache)
+	chunk_manager.initialize()
+
 	instantiation_complete.emit()
 	
 	if debug:

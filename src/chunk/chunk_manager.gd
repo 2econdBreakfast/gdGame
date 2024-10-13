@@ -1,3 +1,5 @@
+# ChunkManager.gd
+
 class_name ChunkManager extends Node
 
 @export var chunk_tile_size: int = 8
@@ -21,35 +23,34 @@ var single_tile_size: Vector2i
 var terrain_tilemap: TileMap
 
 var current_chunk: Vector2i
-var loaded_chunks: Array = []
-var chunk_map: Array[Array] = []
+var loaded_chunks = {}  # Dictionary of loaded chunks
 
 var chunk_area2d: Area2D
 var chunk_area2d_shape: CollisionShape2D
 
-func initialize(generation_cache: Dictionary):
+func initialize():
 	var chunk_path = "user://chunks/"
 
-	# Clear artifacts from last generation
-	ChunkFileAccess.clear_chunk_directory(chunk_path)
-
-	terrain_tilemap = generation_cache.get("terrain_tilemap")
+	terrain_tilemap = WORLD_DATA.terrain_tilemap
 	single_tile_size = terrain_tilemap.tile_set.tile_size
 
 	# In standard Godot units
 	chunk_actual_size = chunk_tile_size * single_tile_size
 
-	var map_width = generation_cache.get("width")
-	var map_height = generation_cache.get("height")
+	var map_width = WORLD_DATA.cache.get("width")
+	var map_height = WORLD_DATA.cache.get("height")
 
-	var map_data: Array[Array] = generation_cache.get("map_data", [])
-	var tree_dict = generation_cache.get("tree_dict", {})
+	var map_data: Array[Array] = WORLD_DATA.cache.get("map_data", [])
+	var tree_array = WORLD_DATA.cache.get("tree_array", [])
 
-	var chunk_map_size: Vector2i = Vector2i(map_width, map_height) / chunk_tile_size
+	var chunk_map_size: Vector2i = Vector2i(map_width / chunk_tile_size, map_height / chunk_tile_size)
 
 	if debug:
 		print("Map Size: ", chunk_map_size)
-	initialize_chunk_map(map_data, tree_dict, chunk_map_size)
+	
+	# Preprocess tree data to assign to chunks
+	var chunk_tree_data = preprocess_tree_data(tree_array)
+	initialize_chunks(map_data, chunk_tree_data, chunk_map_size)
 
 	initialize_chunk_area()
 
@@ -58,28 +59,44 @@ func initialize(generation_cache: Dictionary):
 	update_area2d_position()
 	update_loaded_chunks()
 
-func initialize_chunk_map(map_data: Array[Array], tree_dict: Dictionary, chunk_map_size: Vector2i):
-	chunk_map.resize(chunk_map_size.y)
-	for y in range(chunk_map_size.y):
-		chunk_map[y] = []
-		for x in range(chunk_map_size.x):
-			var chunk: Chunk = create_chunk(x, y, map_data, tree_dict)
-			chunk_map[y].append(chunk)
+func preprocess_tree_data(tree_array: Array[TreeData]) -> Dictionary:
+	var chunk_tree_data = {}
+	for tree_data in tree_array:
+		var chunk_pos = Vector2i(tree_data.position / chunk_tile_size)
+		var key = "%d_%d" % [chunk_pos.x, chunk_pos.y]
+		if not chunk_tree_data.has(key):
+			chunk_tree_data[key] = []
+		chunk_tree_data[key].append(tree_data)
+	return chunk_tree_data
 
-func create_chunk(x: int, y: int, map_data: Array[Array], tree_dict: Dictionary) -> Chunk:
-	var chunk = Chunk.new(chunk_tile_size)
+func initialize_chunks(map_data: Array[Array], chunk_tree_data: Dictionary, chunk_map_size: Vector2i):
+	for y in range(chunk_map_size.y):
+		for x in range(chunk_map_size.x):
+			var chunk: Chunk = create_chunk(x, y, map_data)
+			# Assign TreeData to chunk if any
+			var key = "%d_%d" % [x, y]
+			if chunk_tree_data.has(key):
+				chunk.object_data = chunk_tree_data[key]
+			# Save chunk to file
+			ChunkMemoryAccess.save_chunk(chunk, Vector2i(x, y))
+			# Unload chunk
+			chunk.queue_free()
+			chunk = null
+			if debug:
+				print("Chunk at (%d, %d) saved and unloaded." % [x, y])
+
+func create_chunk(x: int, y: int, map_data: Array[Array]) -> Chunk:
+	var chunk = Chunk.new()
+	chunk.initialize(chunk_tile_size)
 	chunk.y_sort_enabled = true
 	# Store slice of map in chunk
 	for y2 in range(chunk_tile_size):
+		chunk.map_data.append([])
 		for x2 in range(chunk_tile_size):
 			# Calculate actual position of tile in tilemap
 			var map_y = y * chunk_tile_size + y2
 			var map_x = x * chunk_tile_size + x2
-
-			chunk.map_data[y2][x2] = map_data[map_y][map_x]
-			var map_pos = Vector2i(map_x, map_y)
-			if tree_dict.has(map_pos):
-				chunk.object_data[Vector2i(x2, y2)] = tree_dict.get(map_pos, 0)
+			chunk.map_data[y2].append(map_data[map_y][map_x])
 	return chunk
 
 func initialize_chunk_area():
@@ -117,7 +134,6 @@ func update_loaded_chunks():
 	if debug:
 		var count = get_chunk_count()
 		print("Chunks in memory: ", count)
-		print("Chunk map size: ", PackedByteArray(chunk_map).size())
 
 	var chunks_to_load = get_chunks_to_load()
 	var chunks_to_unload = get_chunks_to_unload(chunks_to_load)
@@ -127,84 +143,71 @@ func update_loaded_chunks():
 		unload_chunk(chunk_position)
 	# Load chunks
 	for chunk_position in chunks_to_load:
-		if !loaded_chunks.has(chunk_position):
+		if not loaded_chunks.has(chunk_position):
 			load_chunk(chunk_position)
 
 func get_chunk_count() -> int:
-	var count = 0
-	for row in chunk_map:
-		for cell in row:
-			if cell is Chunk:
-				count += 1
-	return count
+	return loaded_chunks.size()
 
 func get_chunks_to_load() -> Array:
 	var chunks_to_load: Array = []
 	for delta_y in range(-chunk_load_distance, chunk_load_distance + 1):
 		var y = current_chunk.y + delta_y
-		if y >= 0 and y < chunk_map.size():
+		if y >= 0 and y < world_chunk_size().y:
 			for delta_x in range(-chunk_load_distance, chunk_load_distance + 1):
 				var x = current_chunk.x + delta_x
-				if x >= 0 and x < chunk_map[y].size():
+				if x >= 0 and x < world_chunk_size().x:
 					chunks_to_load.append(Vector2i(x, y))
 	return chunks_to_load
 
 func get_chunks_to_unload(chunks_to_load: Array) -> Array:
 	var chunks_to_unload: Array = []
-	for chunk_position in loaded_chunks:
-		if !chunks_to_load.has(chunk_position):
+	for chunk_position in loaded_chunks.keys():
+		if not chunks_to_load.has(chunk_position):
 			chunks_to_unload.append(chunk_position)
 	return chunks_to_unload
 
-func instantiate_chunk(chunk_position: Vector2i):
-	var chunk = get_chunk_at_position(chunk_position)
-	if chunk:
-		chunk_container.add_child(chunk)
-		tree_instantiator.instantiate(chunk, chunk_position, chunk_actual_size)
-		return chunk
-	else:
-		if debug:
-			print("Chunk at position", chunk_position, "is not valid or has been freed.")
+func world_chunk_size() -> Vector2i:
+	# Returns the size of the world in chunks
+	var map_width = WORLD_DATA.cache.get("width")
+	var map_height = WORLD_DATA.cache.get("height")
+	return Vector2i(map_width / chunk_tile_size, map_height / chunk_tile_size)
 
 func get_chunk_at_position(chunk_position: Vector2i) -> Chunk:
-	var y = chunk_position.y
-	var x = chunk_position.x
-	if y >= 0 and y < chunk_map.size() and x >= 0 and x < chunk_map[y].size():
-		var chunk = chunk_map[y][x]
-		if chunk is Chunk and is_instance_valid(chunk):
+	if loaded_chunks.has(chunk_position):
+		var chunk = loaded_chunks[chunk_position]
+		if is_instance_valid(chunk):
 			return chunk
 	return null
 
-func unload_chunk(chunk_position: Vector2i):
-	if debug:
-		print("Unloading chunk at ", chunk_position)
-
-	var chunk = get_chunk_at_position(chunk_position)
-	if chunk:
-		var index = loaded_chunks.find(chunk_position)
-		if index != -1:
-			loaded_chunks.remove_at(index)
-		# Save the chunk as a PackedScene
-		ChunkFileAccess.save_chunk(chunk, chunk_position)
-		chunk.queue_free()
-		chunk_map[chunk_position.y][chunk_position.x] = null
-	else:
-		if debug:
-			print("Chunk at ", chunk_position, " is already freed or invalid.")
-
 func load_chunk(chunk_position: Vector2i):
-	var chunk = ChunkFileAccess.load_chunk(chunk_position)
+	if loaded_chunks.has(chunk_position):
+		return  # Chunk is already loaded
+	var chunk = ChunkMemoryAccess.load_chunk(chunk_position)
+	Debug.Memory.print_mem_usage()
 	if chunk:
 		chunk_container.call_deferred("add_child", chunk)
 		if debug:
 			print("Loading saved chunk at ", chunk_position)
+		loaded_chunks[chunk_position] = chunk
+		# Instantiate trees or other objects
+		tree_instantiator.instantiate(chunk, chunk_position, chunk_actual_size)
 	else:
-		chunk = instantiate_chunk(chunk_position)
 		if debug:
-			print("Initializing chunk at ", chunk_position)
+			print("Failed to load chunk at ", chunk_position)
 
-	loaded_chunks.append(chunk_position)
-	chunk_map[chunk_position.y][chunk_position.x] = chunk
+func unload_chunk(chunk_position: Vector2i):
+	if debug:
+		print("Unloading chunk at ", chunk_position)
+	if loaded_chunks.has(chunk_position):
+		var chunk = loaded_chunks[chunk_position]
+		# Save the chunk data
+		ChunkMemoryAccess.save_chunk(chunk, chunk_position)
+		chunk.queue_free()
+		loaded_chunks.erase(chunk_position)
+	else:
+		if debug:
+			print("Chunk at ", chunk_position, " is not loaded.")
 
 func print_chunk_children(chunk):
 	if chunk and debug:

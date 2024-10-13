@@ -24,7 +24,7 @@ class TreeAtlasCoords:
 	const DEAD				= Vector2i(2, 0)
 	const PALM				= Vector2i(3, 0)
 
-class TreeID:
+class TreeType:
 	const OAK				= 1
 	const PINE				= 2
 	const DEAD				= 3

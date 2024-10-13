@@ -6,3 +6,4 @@ class Memory:
 		if !message.is_empty():
 			print(message)
 		print("Dynamic Memory Usage: ", OS.get_memory_info(), " bytes")
+		print("Static Memory Usage: ", OS.get_static_memory_usage(), " bytes")

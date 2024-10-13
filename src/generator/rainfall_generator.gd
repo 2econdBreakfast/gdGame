@@ -1,9 +1,9 @@
 class_name RainfallGenerator extends GeneratorModule
 @export var n : FastNoiseLite
-func generate(generation_cache : Dictionary):
-	var map_data = generation_cache.get("map_data")
-	var width = generation_cache.get("width")
-	var height = generation_cache.get("height")
+func generate():
+	var map_data = WORLD_DATA.cache.get("map_data")
+	var width = WORLD_DATA.cache.get("width")
+	var height = WORLD_DATA.cache.get("height")
 	
 
 	n.seed = randi()

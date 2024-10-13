@@ -1,15 +1,14 @@
+# Chunk.gd
+
 class_name Chunk extends Node2D
 
-var map_data : Array[Array] = []
-var object_data : Dictionary = {}
+var map_data: Array = []
+var object_data: Array = []
 
-func _init(size):
-	map_data.resize(size)
-	for row in map_data:
-		row.resize(size)
+func _init():
 	self.y_sort_enabled = true
 
-func add_object(obj: PackedScene, pos: Vector2):
-	var instance = obj.instance()
-	instance.position = pos
-	add_child(instance)
+func initialize(size):
+	map_data.resize(size)
+	for i in range(size):
+		map_data[i] = []

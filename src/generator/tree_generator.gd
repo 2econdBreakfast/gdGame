@@ -10,11 +10,11 @@ var terrain_chance_map : Dictionary = {
 	Biomes.FOREST.terrain_atlas_coords : 0.4,
 	Biomes.BEACH.terrain_atlas_coords : 0.05
 }
-func generate(generation_cache : Dictionary):
-	var width = generation_cache.get("width")
-	var height = generation_cache.get("height")
-	var map_data : Array[Array] = generation_cache.get("map_data")
-	var tree_dict : Dictionary = {}
+func generate():
+	var width = WORLD_DATA.cache.get("width")
+	var height = WORLD_DATA.cache.get("height")
+	var map_data : Array[Array] = WORLD_DATA.cache.get("map_data")
+	var tree_array : Array[TreeData] = []
 
 	for y in range(height):
 		for x in range(width):
@@ -24,13 +24,16 @@ func generate(generation_cache : Dictionary):
 			if tile_data.terrain_type in incompatible_terrain:
 				continue
 				
-			var tree
+			var tree_type : int
 			var biome : BiomeData = Biomes.get_biome_by_id(tile_data.biome)
+			if biome.terrain_atlas_coords in incompatible_terrain:
+				break
 			if biome:
-				tree = biome.get_random_tree()
-			if tree:
+				tree_type = biome.get_random_tree()
+			if tree_type:
 				var tree_chance = biome.fertility
 				if tree_chance > randf_range(0, 1):
-					tree_dict[Vector2i(x, y)] = tree
+					var tree_data : TreeData = TreeData.new(tree_type, 0, Vector2(x, y))
+					tree_array.append(tree_data)
 	
-	generation_cache["tree_dict"] = tree_dict
+	WORLD_DATA.cache["tree_array"] = tree_array

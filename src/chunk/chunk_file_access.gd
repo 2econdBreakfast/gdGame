@@ -1,58 +1,105 @@
-class_name ChunkFileAccess
+# ChunkFileAccess.gd
 
-static func save_chunk(chunk: Node, coordinates: Vector2i):
-	var path = get_chunk_path(coordinates)
-	
-	# Ensure all scripts are embedded or paths are correct
-	for node in chunk.get_children(true):
-		set_recursive_owner(node, chunk)
-	
-	var save_file = PackedScene.new()
-	var status = save_file.pack(chunk)
-	
-	if status != OK:
-		print("Failed to pack scene with error code: ", status)
+class_name ChunkFileAccess extends Node  # We extend Node to use signals
+
+signal map_save_complete(success)
+signal map_load_complete(success)
+
+
+var chunk_data_map = {}  # Dictionary to hold chunk data in memory
+
+var save_thread: Thread = null
+var load_thread: Thread = null
+
+var save_in_progress: bool = false
+var load_in_progress: bool = false
+
+var save_mutex: Mutex = Mutex.new()
+var load_mutex: Mutex = Mutex.new()
+
+# Existing methods...
+
+# Function to save the entire map
+func save_map():
+	if save_in_progress:
+		print("Save already in progress")
 		return
-	
-	var error = ResourceSaver.save(save_file, path)
-	if error != OK:
-		print("Failed to save scene: ", path, " Error code: ", error)
+	save_in_progress = true
+	save_thread = Thread.new()
+	# Lock the mutex to safely copy the chunk_data_map
+	save_mutex.lock()
+	var data_to_save = chunk_data_map.duplicate(true)  # Deep copy
+	save_mutex.unlock()
+	# Start the thread using Callable.bind()
+	var callable = Callable(self, "_threaded_save_map").bind(data_to_save)
+	var result = save_thread.start(callable)
+	if result != OK:
+		print("Failed to start save thread")
+		save_in_progress = false
+		save_thread = null
 
-static func load_chunk(coordinates: Vector2i) -> Node:
-	var path = get_chunk_path(coordinates)
-	if ResourceLoader.exists(path):
-		var packed_scene = load(path) as PackedScene
-		if packed_scene:
-			var chunk = packed_scene.instantiate()
-			return chunk
+func _threaded_save_map(data_to_save):
+	var success = false
+	var path = "user://world_save.dat"
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if file:
+		file.store_var(data_to_save)
+		file.close()
+		print("Map saved to ", path)
+		success = true
+	else:
+		print("Failed to open file for saving map at ", path)
+	# Signal the main thread that save is complete
+	call_deferred("_on_save_complete", success)
+	# Clean up the thread
+	save_in_progress = false
+	if save_thread:
+		save_thread.wait_to_finish()
+		save_thread = null
+
+func _on_save_complete(success):
+	emit_signal("map_save_complete", success)
+
+# Function to load the entire map
+func load_map():
+	if load_in_progress:
+		print("Load already in progress")
+		return
+	load_in_progress = true
+	load_thread = Thread.new()
+	# Start the thread using Callable
+	var callable = Callable(self, "_threaded_load_map")
+	var result = load_thread.start(callable)
+	if result != OK:
+		print("Failed to start load thread")
+		load_in_progress = false
+		load_thread = null
+
+func _threaded_load_map():
+	var success = false
+	var path = "user://world_save.dat"
+	if FileAccess.file_exists(path):
+		var file = FileAccess.open(path, FileAccess.READ)
+		if file:
+			var loaded_data = file.get_var()
+			file.close()
+			# Lock the mutex to safely update chunk_data_map
+			load_mutex.lock()
+			chunk_data_map = loaded_data
+			load_mutex.unlock()
+			print("Map loaded from ", path)
+			success = true
 		else:
-			print("Failed to load PackedScene at ", path)
+			print("Failed to open file for loading map at ", path)
 	else:
-		print("No saved chunk at ", path)
-	return null
+		print("No saved map at ", path)
+	# Signal the main thread that load is complete
+	call_deferred("_on_load_complete", success)
+	# Clean up the thread
+	load_in_progress = false
+	if load_thread:
+		load_thread.wait_to_finish()
+		load_thread = null
 
-static func get_chunk_path(coordinates: Vector2i) -> String:
-	return "user://chunks/chunk_%d_%d.tscn" % [coordinates.x, coordinates.y]
-
-static func set_recursive_owner(node: Node, owner: Node):
-	# Set the owner of the current node
-	node.owner = owner
-	
-	# Recursively set the owner for all children
-	for child in node.get_children():
-		set_recursive_owner(child, owner)
-
-static func clear_chunk_directory(chunk_path: String):
-	if DirAccess.dir_exists_absolute(chunk_path):
-		var dir = DirAccess.open(chunk_path)
-		if dir:
-			dir.list_dir_begin()
-			var file_name = dir.get_next()
-			while file_name != "":
-				if !dir.current_is_dir():
-					var file_path = chunk_path + "/" + file_name
-					DirAccess.remove_absolute(file_path)
-				file_name = dir.get_next()
-			dir.list_dir_end()
-	else:
-		DirAccess.make_dir_recursive_absolute(chunk_path)
+func _on_load_complete(success):
+	emit_signal("map_load_complete", success)

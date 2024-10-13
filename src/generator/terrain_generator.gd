@@ -5,11 +5,11 @@ static var THREAD_DICTIONARY : Dictionary = {}
 static var ALL_THREADS_FINISHED : bool
 
 
-func generate(generation_cache : Dictionary):
-	var height = generation_cache.get("height")
-	var width = generation_cache.get("width")
-	var map_data : Array[Array] = generation_cache.get("map_data")
-	var max_threads : int = generation_cache.get("max_threads")
+func generate():
+	var height = WORLD_DATA.cache.get("height")
+	var width = WORLD_DATA.cache.get("width")
+	var map_data : Array[Array] = WORLD_DATA.cache.get("map_data")
+	var max_threads : int = WORLD_DATA.cache.get("max_threads")
 	var map_rows_per_thread = height / max_threads;
 	# ensure we get all remaining rows in final thread in case height \ max_threads gives remainder
 	var last_thread_rows = map_rows_per_thread + height % max_threads

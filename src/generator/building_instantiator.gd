@@ -3,9 +3,9 @@ class_name BuildingInstantiator extends InstantiatorModule
 
 @export var building_container : Node2D
 
-func instantiate(generation_cache : Dictionary):
-	var cabin_scene : PackedScene = generation_cache.get("cabin_scene")
-	var cabin_position = generation_cache.get("cabin_position")
+func instantiate():
+	var cabin_scene : PackedScene = WORLD_DATA.cache.get("cabin_scene")
+	var cabin_position = WORLD_DATA.cache.get("cabin_position")
 	
 	
 	if !building_container:

@@ -13,9 +13,9 @@ var width
 var height
 
 
-func generate_sites(generation_cache : Dictionary):
-	self.width = generation_cache["width"]
-	self.height = generation_cache["height"]
+func generate_sites():
+	self.width = WORLD_DATA.cache["width"]
+	self.height = WORLD_DATA.cache["height"]
 	var rect_resolution : Vector2i = Vector2i(width, height)
 	_delaunay = Delaunay.new(Rect2(Vector2i.ZERO, rect_resolution))
 	

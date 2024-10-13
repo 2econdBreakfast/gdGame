@@ -1,8 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://brsme2a6osqvd"]
+[gd_scene load_steps=4 format=3 uid="uid://brsme2a6osqvd"]
 
-[ext_resource type="Script" path="res://src/world_objects/trees/tree.gd" id="1_yhfe0"]
-[ext_resource type="Script" path="res://src/world_objects/drop_object_on_destroy.gd" id="2_fsx2n"]
-[ext_resource type="PackedScene" uid="uid://dn1u2gx15o57r" path="res://prefabs/log.tscn" id="3_caxli"]
+[ext_resource type="Script" path="res://src/world_objects/destructible_object.gd" id="1_ywhfu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ww488"]
 radius = 12.0416
@@ -14,8 +12,8 @@ size = Vector2(20, 32)
 y_sort_enabled = true
 collision_layer = 2
 collision_mask = 2
-script = ExtResource("1_yhfe0")
-health = 3
+script = ExtResource("1_ywhfu")
+health = null
 
 [node name="GroundCollisionShape" type="CollisionShape2D" parent="."]
 top_level = true
@@ -40,7 +38,3 @@ top_level = true
 y_sort_enabled = true
 position = Vector2(-2, -45)
 shape = SubResource("RectangleShape2D_7s01k")
-
-[node name="DropObjectOnDestroy" type="Node" parent="."]
-script = ExtResource("2_fsx2n")
-item_prefab = ExtResource("3_caxli")

@@ -4,17 +4,17 @@ class_name BuildingPlacementGenerator extends GeneratorModule
 
 var incompatible_terrain_types = [Globals.TerrainTileType.WATER, Globals.TerrainTileType.DEEP_WATER]
 
-func generate(generation_cache : Dictionary):
-	var map_width = generation_cache.get("width")
-	var map_height = generation_cache.get("height")
-	var map_data : Array[Array] = generation_cache.get("map_data")
+func generate():
+	var map_width = WORLD_DATA.cache.get("width")
+	var map_height = WORLD_DATA.cache.get("height")
+	var map_data : Array[Array] = WORLD_DATA.cache.get("map_data")
 	
-	generation_cache["cabin_scene"] = cabin_scene
+	WORLD_DATA.cache["cabin_scene"] = cabin_scene
 	var cabin = cabin_scene.instantiate()
 	cabin = cabin as Building
 	
 	
-	var tilemap : TileMap = generation_cache.get("terrain_tilemap")
+	var tilemap : TileMap = WORLD_DATA.terrain_tilemap
 	var tile_size = tilemap.tile_set.tile_size
 	var cabin_tile_size : Vector2i = Vector2i(cabin.rect.size) / tile_size
 	
@@ -43,7 +43,7 @@ func generate(generation_cache : Dictionary):
 		
 		if !incompatible_terrain:
 			var cabin_position = Vector2i(cabin_x, cabin_y) * tile_size
-			generation_cache["cabin_position"] = cabin_position
+			WORLD_DATA.cache["cabin_position"] = cabin_position
 			done = true
 			
 			for y in range(cabin_y, cabin_y + cabin_tile_size.y):

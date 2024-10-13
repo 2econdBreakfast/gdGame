@@ -19,6 +19,7 @@ run/max_fps=60
 
 BeehaveGlobalMetrics="*res://addons/beehave/metrics/beehave_global_metrics.gd"
 BeehaveGlobalDebugger="*res://addons/beehave/debug/global_debugger.gd"
+WORLD_DATA="*res://src/generator/world_data.gd"
 GAME_CLOCK="*res://src/clock/game_clock.gd"
 CHARACTER_DATA="*res://src/player/character_data.gd"
 
