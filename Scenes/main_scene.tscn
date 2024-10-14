@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cvnnd7yosb00i" path="res://ui/inventory_ui/inventory.tscn" id="1_nw8ng"]
 [ext_resource type="PackedScene" uid="uid://d34a52kj5ljdd" path="res://prefabs/Player.tscn" id="2_52eap"]
 [ext_resource type="PackedScene" uid="uid://dn8ptif88wr4i" path="res://prefabs/camera.tscn" id="3_6l6es"]
-[ext_resource type="Script" path="res://src/items/ItemManager.gd" id="4_w6ky1"]
+[ext_resource type="Script" path="res://src/items/item_manager.gd" id="4_w6ky1"]
 [ext_resource type="PackedScene" uid="uid://cb5i0x0mu2ped" path="res://prefabs/map.tscn" id="5_1a6y7"]
 [ext_resource type="PackedScene" uid="uid://bnqrolr6i6i47" path="res://prefabs/cabin.tscn" id="6_1yj28"]
 [ext_resource type="Script" path="res://ui/UI_Controller.gd" id="6_mb180"]
@@ -19,6 +19,22 @@ y_sort_enabled = true
 
 [node name="Map" parent="." instance=ExtResource("5_1a6y7")]
 y_sort_enabled = true
+
+[node name="TilemapNavigationManager" parent="Map" index="1"]
+disabled = true
+
+[node name="TerrainTilemap" parent="Map/Tilemaps" index="0"]
+rendering_quadrant_size = 8
+layer_0/navigation_enabled = false
+layer_2/name = "Soil"
+layer_2/navigation_enabled = false
+layer_2/tile_data = PackedInt32Array()
+layer_3/name = "Obstacles"
+layer_3/z_index = 2
+layer_3/tile_data = PackedInt32Array()
+layer_4/name = "highlight"
+layer_4/z_index = 1
+layer_4/tile_data = PackedInt32Array()
 
 [node name="ChunkArea" parent="Map/ChunkManager" index="0"]
 collision_mask = 2049
@@ -42,6 +58,34 @@ inventory = NodePath("../../UI/Inventory")
 y_sort_enabled = true
 position = Vector2(0, -74)
 position_smoothing_enabled = true
+
+[node name="NPCs" type="Node2D" parent="Actors"]
+y_sort_enabled = true
+
+[node name="Bunny" parent="Actors/NPCs" instance=ExtResource("1_0h13k")]
+position = Vector2(615, 446)
+collision_layer = 0
+collision_mask = 0
+debug_behavior_tree = true
+
+[node name="AnimatedSprite2D" parent="Actors/NPCs/Bunny" index="0"]
+animation = &"move_right"
+
+[node name="NPCNavigator" parent="Actors/NPCs/Bunny" index="2"]
+target_desired_distance = 20.0
+navigation_layers = 1
+avoidance_layers = 0
+avoidance_mask = 7
+debug_enabled = true
+
+[node name="NPCData" parent="Actors/NPCs/Bunny" index="5"]
+move_range = 200.0
+
+[node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
+blackboard = NodePath("@Node@17587")
+
+[node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
+max_ticks = 250
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource("6_mb180")
@@ -82,34 +126,6 @@ alignment_vertical = 0
 [node name="Clock" parent="UI/HUD" instance=ExtResource("8_2anr3")]
 layout_mode = 2
 
-[node name="NPCs" type="Node2D" parent="UI"]
-y_sort_enabled = true
-
-[node name="Bunny" parent="UI/NPCs" instance=ExtResource("1_0h13k")]
-position = Vector2(615, 446)
-collision_layer = 0
-collision_mask = 0
-debug_behavior_tree = true
-
-[node name="AnimatedSprite2D" parent="UI/NPCs/Bunny" index="0"]
-animation = &"move_right"
-
-[node name="NPCNavigator" parent="UI/NPCs/Bunny" index="2"]
-target_desired_distance = 20.0
-navigation_layers = 1
-avoidance_layers = 0
-avoidance_mask = 7
-debug_enabled = true
-
-[node name="NPCData" parent="UI/NPCs/Bunny" index="5"]
-move_range = 200.0
-
-[node name="BehaviorTree" parent="UI/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
-blackboard = NodePath("@Node@17587")
-
-[node name="InitializeIdleTimer" parent="UI/NPCs/Bunny/BehaviorTree/Main" index="0"]
-max_ticks = 250
-
 [node name="PlayerPlacementInitializer" type="Node" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("8_v58e0")
 player = NodePath("../Actors/Player")
@@ -123,13 +139,13 @@ script = ExtResource("4_w6ky1")
 script = ExtResource("12_aujmj")
 
 [connection signal="instantiation_complete" from="Map" to="PlayerPlacementInitializer" method="_on_map_instantiation_complete"]
-[connection signal="velocity_computed" from="UI/NPCs/Bunny/NPCNavigator" to="UI/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]
-[connection signal="timeout" from="UI/NPCs/Bunny/NPCNavigator/path_recalculation_timer" to="UI/NPCs/Bunny/NPCNavigator" method="_on_recalculation_timer_timeout"]
+[connection signal="velocity_computed" from="Actors/NPCs/Bunny/NPCNavigator" to="Actors/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]
+[connection signal="timeout" from="Actors/NPCs/Bunny/NPCNavigator/path_recalculation_timer" to="Actors/NPCs/Bunny/NPCNavigator" method="_on_recalculation_timer_timeout"]
 
 [editable path="Map"]
+[editable path="Actors/NPCs/Bunny"]
 [editable path="UI/Inventory"]
 [editable path="UI/HUD/PlayerInfo"]
 [editable path="UI/HUD/PlayerInfo/VBoxContainer/Money"]
 [editable path="UI/HUD/PlayerInfo/VBoxContainer/Hunger"]
 [editable path="UI/HUD/Clock"]
-[editable path="UI/NPCs/Bunny"]

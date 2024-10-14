@@ -3,7 +3,6 @@
 class_name ChunkTreeInstantiator extends Node
 
 @export var tree_prototypes: Array[PackedScene]
-@export var tree_tile_size: int = 128
 var debug: bool = false
 
 func instantiate(chunk: Chunk, chunk_position: Vector2i, chunk_size: Vector2):
@@ -25,4 +24,4 @@ func instantiate(chunk: Chunk, chunk_position: Vector2i, chunk_size: Vector2):
 			chunk.call_deferred("add_child", tree)
 
 func calculate_tree_position(tree_grid_position: Vector2i) -> Vector2:
-	return Vector2(tree_grid_position) * tree_tile_size + Vector2(randi_range(-32, 32), randi_range(-32, 32))
+	return Vector2(tree_grid_position) * Vector2(WORLD_DATA.terrain_tilemap.tile_set.tile_size) + Vector2(randi_range(-32, 32), randi_range(-32, 32))

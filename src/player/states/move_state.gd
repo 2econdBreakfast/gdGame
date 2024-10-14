@@ -15,6 +15,8 @@ func exit():
 	pass
 
 func process_input() -> State:
+	if Input.is_action_just_pressed("use_tool"):
+		return state_machine.states.get("use_tool")
 	if Input.is_action_just_pressed("attack"):
 		return state_machine.states.get("attack")
 	if _player.get_cardinal_direction_name() != direction_name:
@@ -26,6 +28,7 @@ func process_input() -> State:
 		return state_machine.states.get("run")
 	else:
 		return state_machine.states.get("walk") 
+
 
 func process_physics(delta):
 	_player.move(move_speed * _player.input_listener.dirInput.normalized() * delta)

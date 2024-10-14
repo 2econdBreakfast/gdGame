@@ -33,7 +33,7 @@ func _ready():
 	self.facing_dir = Direction.SOUTH
 	if inventory:
 		$ItemDetector.inventory = inventory
-	self.equipped_tool = Shovel.new()
+	self.equipped_tool = Hoe.new(self)
 	self.call_deferred_thread_group("add_child", self.equipped_tool)
 	
 func _process(delta):
@@ -41,8 +41,7 @@ func _process(delta):
 		input_listener.pollInput()
 	if state_machine:
 		state_machine.process_state(delta)
-	equipped_tool.can_use(self)
-		
+
 func _physics_process(delta):
 	if state_machine:
 		state_machine.process_state_physics(delta)
@@ -80,3 +79,9 @@ func get_tile_at_displacement(displacement : Vector2):
 
 func get_tile_directly_ahead():
 	return get_tile_at_displacement(self.facing_dir)
+
+func prepare_to_attack():
+	self.equipped_tool.active = false
+	
+func prepare_to_dash():
+	self.equipped_tool.active = false

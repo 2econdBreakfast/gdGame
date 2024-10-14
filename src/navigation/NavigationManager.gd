@@ -1,7 +1,7 @@
 extends NavigationRegion2D
 
 class_name TilemapNavigationManager
-
+@export var disabled : bool = false
 var terrain_tilemap: TileMap
 var obstacle_tilemap: TileMap
 
@@ -20,8 +20,8 @@ var obstacles : Array
 
 func _on_map_generator_generation_complete():
 	terrain_tilemap = get_node(Paths.terrain_tilemap)
-
-	update_nav_region()
+	if not disabled:
+		update_nav_region()
 
 func update_nav_region():
 	print("updating nav region")
@@ -34,13 +34,23 @@ func update_nav_region():
 	
 	walkable_tiles = []
 	for tile_atlas_coords in walkable_tile_atlas_coords:
-		var tiles = terrain_tilemap.get_used_cells_by_id(0, 0, tile_atlas_coords)
+		var tiles = terrain_tilemap.get_used_cells_by_id(1, 0, tile_atlas_coords)
 		walkable_tiles.append_array(tiles)
 	
+	var tile_size = WORLD_DATA.terrain_tilemap.tile_set.tile_size
+	
 	var nav_polygon = NavigationPolygon.new()
+	print("Walkable ", walkable_tiles.size())
+	for tile_pos in walkable_tiles:
+		var poly = terrain_tilemap.get_cell_tile_data(1, tile_pos).get_navigation_polygon(0).get_outline(0)
+		nav_polygon.add_outline(poly)
+	print("nav_poly: ", nav_polygon.get_polygon_count())
 
+		
 	NavigationServer2D.bake_from_source_geometry_data(nav_polygon, nav_mesh_data);
 	self.navigation_polygon = nav_polygon
+	
+	terrain_tilemap.set_layer_navigation_enabled(1, false)
 	
 
 func xform_packed_array(arr : PackedVector2Array, t : Transform2D) -> PackedVector2Array:

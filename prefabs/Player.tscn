@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d34a52kj5ljdd"]
+[gd_scene load_steps=15 format=3 uid="uid://d34a52kj5ljdd"]
 
 [ext_resource type="Script" path="res://src/player/player.gd" id="1_fwv86"]
 [ext_resource type="SpriteFrames" uid="uid://c6odp0uge3uld" path="res://assets/animations/player.tres" id="2_indye"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://src/player/states/run_state.gd" id="7_icq80"]
 [ext_resource type="Script" path="res://src/player/states/attack_state.gd" id="8_brm3i"]
 [ext_resource type="Script" path="res://src/player/item_detector.gd" id="9_c4c8k"]
+[ext_resource type="Script" path="res://src/player/states/use_hoe_state.gd" id="10_v6767"]
+[ext_resource type="Script" path="res://src/player/states/use_tool_state.gd" id="10_w3qrb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2xl5b"]
 height = 48.0
@@ -63,9 +65,15 @@ script = ExtResource("6_wht2f")
 [node name="RunState" type="Node" parent="StateMachine"]
 script = ExtResource("7_icq80")
 
+[node name="UseToolState" type="Node" parent="StateMachine"]
+script = ExtResource("10_w3qrb")
+
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitboxes")]
 script = ExtResource("8_brm3i")
 hitboxes = [NodePath("../../Hitboxes/Attack")]
+
+[node name="UseHoeState" type="Node" parent="StateMachine"]
+script = ExtResource("10_v6767")
 
 [node name="Hitboxes" type="Node2D" parent="."]
 

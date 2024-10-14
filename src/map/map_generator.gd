@@ -33,6 +33,7 @@ func generate_and_instantiate():
 		Debug.Memory.print_mem_usage("Memory usage after generation")
 	
 	WORLD_DATA.cache["width"] = map_size.x
+	WORLD_DATA.map_size = map_size
 	WORLD_DATA.cache["height"] = map_size.y
 	WORLD_DATA.cache["max_threads"] = max_threads
 	WORLD_DATA.terrain_tilemap = terrain_tilemap

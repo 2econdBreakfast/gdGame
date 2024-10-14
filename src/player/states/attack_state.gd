@@ -9,6 +9,7 @@ func init_state(player : Player):
 	self._player = player
 
 func enter():
+	_player.prepare_to_attack()
 	cur_attack_time = 0
 	_player.sprite.pause()
 	for hitbox in hitboxes:
