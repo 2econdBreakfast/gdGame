@@ -11,6 +11,7 @@ class TerrainTileType:
 	const SOIL				= Vector2i(5, 0)
 	const RICH_SOIL			= Vector2i(6, 0)
 	const BUILDING			= Vector2i(-1, -1)
+	const NONE				= Vector2i(-1, -1)
 
 class Biome:
 	const FOREST = 0
@@ -29,7 +30,23 @@ class TreeType:
 	const PINE				= 2
 	const DEAD				= 3
 	const PALM				= 4
+
 class ThreadStatus:
 	const RUNNING = 0
 	const FINISHED = 1
 	const FAILED = 3
+	
+class TileMapLayers:
+	const WATER = 0
+	const TERRAIN = 1
+	const SOIL = 2
+	const OBSTACLES = 3
+	const HIGHLIGHT = 4
+	const PLANTS = 5
+
+class TileMapSource:
+	const TERRAIN = 0
+	const HIGHLIGHT = 1
+
+class PlantType:
+	const CARROT = 0

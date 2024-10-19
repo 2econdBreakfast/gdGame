@@ -26,7 +26,6 @@ func _init(player : Player):
 
 func _process(delta):
 	if Input.is_action_just_pressed("exit"):
-		TILE_HIGHLIGHTER.clear_highlighted()
 		self.active = false
 		return
 	if not usage_delay_finished():

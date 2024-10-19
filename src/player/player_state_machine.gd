@@ -8,7 +8,6 @@ var current_state
 	"run"  : get_node("RunState"),
 	"attack":get_node("AttackState"),
 	"use_tool": get_node("UseToolState"),
-	"use_hoe": get_node("UseHoeState")
 }
 signal state_exited(state: State)
 signal state_entered(state: State)

@@ -60,10 +60,3 @@ func xform_packed_array(arr : PackedVector2Array, t : Transform2D) -> PackedVect
 		var padding = 30 * Vector2(sign(xformed.x - t.get_origin().x), sign(xformed.y - t.get_origin().y))
 		result.append(xformed + padding)
 	return result
-
-
-
-
-
-
-

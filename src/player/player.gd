@@ -1,7 +1,14 @@
 class_name Player extends CharacterBody2D
 
 #members
+static var instance : Player
 var facing_dir : Vector2
+
+@onready var tile_interaction_manager : TileInteractionManager = $TileInteractionManager
+
+var interaction_enabled : bool :
+	get: return tile_interaction_manager.interaction_enabled
+
 var facing_dir_int : Vector2i:
 	get:
 		var x = 0
@@ -29,7 +36,12 @@ var facing_dir_int : Vector2i:
 
 
 var equipped_tool : Tool
+var equipped_item : ItemData:
+	get:
+		return inventory.active_quick_slot.itemData
+
 func _ready():
+	Player.instance = self
 	self.facing_dir = Direction.SOUTH
 	if inventory:
 		$ItemDetector.inventory = inventory
@@ -48,7 +60,7 @@ func _physics_process(delta):
 
 func play_animation(animation_name: String):
 	if (sprite):
-		sprite.play(animation_name)  # Assuming you have an AnimationPlayer
+		sprite.play(animation_name)
 
 func move(motion : Vector2) -> KinematicCollision2D:
 	self.facing_dir = motion.normalized()
@@ -85,3 +97,29 @@ func prepare_to_attack():
 	
 func prepare_to_dash():
 	self.equipped_tool.active = false
+
+func enable_interaction(tile_validation_callback : Callable):
+	tile_interaction_manager.enable_interaction_mode(tile_validation_callback)
+
+func disable_interaction():
+	tile_interaction_manager.disable_interaction_mode()
+	
+func activate_tool():
+	deactivate_item()
+	self.equipped_tool.active = true
+
+func activate_item():
+	deactivate_tool()
+	if equipped_item and equipped_item is ConsumableItemData and not equipped_item.active:
+		equipped_item.active = true
+
+func deactivate_item():
+	if equipped_item and equipped_item is ConsumableItemData and equipped_item.active:
+		equipped_item.active = false
+func deactivate_tool():
+	if equipped_tool and equipped_tool.active:
+		equipped_tool.active = false 
+
+func deactivate_all_equipment():
+	deactivate_item()
+	deactivate_tool()

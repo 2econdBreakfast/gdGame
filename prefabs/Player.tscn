@@ -9,8 +9,8 @@
 [ext_resource type="Script" path="res://src/player/states/run_state.gd" id="7_icq80"]
 [ext_resource type="Script" path="res://src/player/states/attack_state.gd" id="8_brm3i"]
 [ext_resource type="Script" path="res://src/player/item_detector.gd" id="9_c4c8k"]
-[ext_resource type="Script" path="res://src/player/states/use_hoe_state.gd" id="10_v6767"]
 [ext_resource type="Script" path="res://src/player/states/use_tool_state.gd" id="10_w3qrb"]
+[ext_resource type="Script" path="res://src/player/tile_interaction_manager.gd" id="11_qbt3s"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2xl5b"]
 height = 48.0
@@ -72,9 +72,6 @@ script = ExtResource("10_w3qrb")
 script = ExtResource("8_brm3i")
 hitboxes = [NodePath("../../Hitboxes/Attack")]
 
-[node name="UseHoeState" type="Node" parent="StateMachine"]
-script = ExtResource("10_v6767")
-
 [node name="Hitboxes" type="Node2D" parent="."]
 
 [node name="Attack" type="Area2D" parent="Hitboxes"]
@@ -98,5 +95,8 @@ input_pickable = false
 position = Vector2(0, -64)
 shape = SubResource("CapsuleShape2D_x6b1p")
 debug_color = Color(0.832027, 0.391539, 0, 0.42)
+
+[node name="TileInteractionManager" type="Node" parent="."]
+script = ExtResource("11_qbt3s")
 
 [connection signal="area_entered" from="ItemDetector/CollectionRadius" to="ItemDetector" method="_on_collection_radius_area_entered"]
