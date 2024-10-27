@@ -2,7 +2,7 @@ class_name CursorManager extends Control
 
 var grabbed_item: ItemDisplay
 var focused_slot: InventorySlot
-var inv_root : Inventory
+@export var inv_root : Inventory
 
 func _ready():
 	inv_root = get_parent()
@@ -94,3 +94,7 @@ func _on_focus_exited(slot: InventorySlot):
 func _get_all_slots() -> Array:
 	# Get all slots from the Inventory UI, modify this if needed
 	return inv_root.slots
+	
+func _on_inv_visibility_changed(visible: bool):
+	if visible:
+		_move_focus_to_slot()

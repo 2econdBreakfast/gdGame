@@ -14,5 +14,6 @@ func on_hit(damage_amount : int):
 func destroy_self():
 	if !destruction_signal_sent:
 		destroyed.emit()
+		ItemManager.destructible_object_destroyed("log", global_position)
 		destruction_signal_sent = true
 		call_deferred("queue_free")

@@ -2,9 +2,9 @@ extends Control
 
 @export var debug : bool = false
 
-@onready var time_label : Label = $HBoxContainer/DateTimeDisplay/Time
-@onready var day_label : Label = $HBoxContainer/DateTimeDisplay/Day
-@onready var clock_center : TextureRect = $HBoxContainer/ClockRim/ClockCenter
+@onready var time_label : Label = $DateTimeDisplay/Time
+@onready var day_label : Label = $DateTimeDisplay/Day
+@onready var clock_center : TextureRect = $ClockRim/ClockCenter
 
 
 const MINUTES_PER_DAY : float = 60.0 * 24.0

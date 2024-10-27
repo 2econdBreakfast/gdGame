@@ -1,36 +1,17 @@
 class_name Inventory extends Control
 
 @export var money : int = 0
-@onready var main_inv_slots : Control = $MainInventory/MainInventoryPanel/MarginContainer/VSplitContainer/CenterContainer/InventorySlots
+@onready var main_inv_slots : Control = $InventorySlots
 var slots : Array[InventorySlot]
 const max_stack : int = 32
 var grabbed_item : ItemDisplay
 const NORMAL_SLOT_STYLE : String = "InventorySlot"
 
-var displaying : bool
+var displaying : bool:
+	get: return visible
+
 func _ready():
-	$MainInventory.visible = false
 	recache_slots()
-
-func _input(event):
-	if Input.is_action_just_pressed("toggle_inventory"):
-		if $MainInventory.visible:
-			displaying = false
-			close_main()
-		else:
-			displaying = true
-			open_main()
-
-		
-func open_main():
-	$MainInventory.visible = true
-	$AnimationPlayer.play("main_inv_fade_in")
-	
-func close_main():
-	$AnimationPlayer.play_backwards("main_inv_fade_in")
-	await  $AnimationPlayer.animation_finished
-	$MainInventory.visible = false
-
 
 func add(item : Item, amount : int):
 	var itemData : ItemData = item.itemData

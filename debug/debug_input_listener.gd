@@ -12,8 +12,7 @@ class_name DebugInputListener extends Node
 
 func _unhandled_input(event):
 	if Input.is_action_pressed("dbg_decrease_health"):
-		CHARACTER_DATA.change_health(-1)
+		CHARACTER_DATA.health -=1
 
 	if Input.is_action_pressed("dbg_increase_health"):
-		CHARACTER_DATA.change_health(1)
-
+		CHARACTER_DATA.health += 1

@@ -38,7 +38,7 @@ var facing_dir_int : Vector2i:
 var equipped_tool : Tool
 var equipped_item : ItemData:
 	get:
-		return inventory.active_quick_slot.itemData
+		return ItemData.new() #todo: fix this
 
 func _ready():
 	Player.instance = self

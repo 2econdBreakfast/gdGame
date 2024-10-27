@@ -5,4 +5,4 @@ func enter():
 		_player.activate_tool()
 
 func process_input() -> State:
-	return state_machine.states.get("idle")
+	return state_machine.states.get("idle") 

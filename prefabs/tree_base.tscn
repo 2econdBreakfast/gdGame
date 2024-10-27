@@ -13,7 +13,6 @@ y_sort_enabled = true
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_ywhfu")
-health = null
 
 [node name="GroundCollisionShape" type="CollisionShape2D" parent="."]
 top_level = true
