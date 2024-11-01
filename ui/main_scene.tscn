@@ -1,0 +1,177 @@
+[gd_scene load_steps=14 format=3 uid="uid://ct4y62u26mkhu"]
+
+[ext_resource type="PackedScene" uid="uid://cb5i0x0mu2ped" path="res://prefabs/map.tscn" id="1_7bmds"]
+[ext_resource type="PackedScene" uid="uid://bnqrolr6i6i47" path="res://prefabs/cabin.tscn" id="2_5usy5"]
+[ext_resource type="PackedScene" uid="uid://d34a52kj5ljdd" path="res://prefabs/Player.tscn" id="3_8af8f"]
+[ext_resource type="PackedScene" uid="uid://dn8ptif88wr4i" path="res://prefabs/camera.tscn" id="4_qpnjm"]
+[ext_resource type="PackedScene" uid="uid://do3s8f6e077gw" path="res://prefabs/bunny.tscn" id="5_7843n"]
+[ext_resource type="PackedScene" uid="uid://cslsrrshjk2jh" path="res://ui/player_info_ui/player_info.tscn" id="7_4b7v0"]
+[ext_resource type="PackedScene" uid="uid://cvnnd7yosb00i" path="res://ui/inventory_ui/inventory.tscn" id="7_xpajw"]
+[ext_resource type="PackedScene" uid="uid://c7c11p3hlhslx" path="res://ui/clock_ui/clock_ui.tscn" id="10_dfe4m"]
+[ext_resource type="Script" path="res://Scenes/PlayerPlacementInitializer.gd" id="11_ok7qi"]
+[ext_resource type="PackedScene" uid="uid://h7e4eb2p4j62" path="res://prefabs/carrot_seeds.tscn" id="12_u5mli"]
+[ext_resource type="Script" path="res://src/items/item_manager.gd" id="12_x1j8y"]
+[ext_resource type="Script" path="res://debug/debug_input_listener.gd" id="13_o0ymo"]
+
+[sub_resource type="GDScript" id="GDScript_1r2ce"]
+script/source = "class_name UIController extends Node
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[node name="World" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Map" parent="." instance=ExtResource("1_7bmds")]
+y_sort_enabled = true
+
+[node name="TilemapNavigationManager" parent="Map" index="1"]
+disabled = true
+
+[node name="TerrainTilemap" parent="Map/Tilemaps" index="0"]
+rendering_quadrant_size = 8
+layer_0/navigation_enabled = false
+layer_2/name = "Soil"
+layer_2/z_index = 1
+layer_2/navigation_enabled = false
+layer_3/name = "Obstacles"
+layer_3/z_index = 2
+layer_4/name = "highlight"
+layer_4/z_index = 1
+layer_5/name = "Plants"
+layer_5/z_index = 2
+
+[node name="ChunkManager" parent="Map" index="4"]
+chunk_tile_size = 16
+chunk_load_distance = 2
+
+[node name="ChunkArea" parent="Map/ChunkManager" index="0"]
+collision_mask = 2049
+
+[node name="BuildingPlacementGenerator" parent="Map/GeneratorModules" index="5"]
+cabin_scene = ExtResource("2_5usy5")
+
+[node name="TreeGenerator" parent="Map/GeneratorModules" index="6"]
+rainfall_weight = null
+terrain_type_weight = null
+enabled = null
+
+[node name="Actors" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Actors" node_paths=PackedStringArray("inventory") instance=ExtResource("3_8af8f")]
+collision_mask = 0
+inventory = NodePath("../../UI/Inventory")
+
+[node name="Camera2D" parent="Actors/Player" instance=ExtResource("4_qpnjm")]
+y_sort_enabled = true
+position = Vector2(0, -74)
+position_smoothing_enabled = true
+
+[node name="NPCs" type="Node2D" parent="Actors"]
+y_sort_enabled = true
+
+[node name="Bunny" parent="Actors/NPCs" instance=ExtResource("5_7843n")]
+position = Vector2(615, 446)
+collision_layer = 0
+collision_mask = 0
+debug_behavior_tree = true
+
+[node name="AnimatedSprite2D" parent="Actors/NPCs/Bunny" index="0"]
+animation = &"move_right"
+
+[node name="NPCNavigator" parent="Actors/NPCs/Bunny" index="2"]
+target_desired_distance = 20.0
+navigation_layers = 1
+avoidance_layers = 0
+avoidance_mask = 7
+debug_enabled = true
+
+[node name="NPCData" parent="Actors/NPCs/Bunny" index="5"]
+move_range = 200.0
+
+[node name="BehaviorTree" parent="Actors/NPCs/Bunny" index="6" node_paths=PackedStringArray("blackboard")]
+blackboard = NodePath("@Node@17359")
+
+[node name="InitializeIdleTimer" parent="Actors/NPCs/Bunny/BehaviorTree/Main" index="0"]
+max_ticks = 250
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = SubResource("GDScript_1r2ce")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 26
+
+[node name="Rows" type="VBoxContainer" parent="UI/MarginContainer"]
+layout_mode = 2
+
+[node name="TopRow" type="HBoxContainer" parent="UI/MarginContainer/Rows"]
+layout_mode = 2
+alignment = 1
+
+[node name="PlayerInfo" parent="UI/MarginContainer/Rows/TopRow" instance=ExtResource("7_4b7v0")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ClockContainer" parent="UI/MarginContainer/Rows/TopRow" instance=ExtResource("10_dfe4m")]
+layout_mode = 2
+
+[node name="ClockRim" parent="UI/MarginContainer/Rows/TopRow/ClockContainer" index="1"]
+size_flags_vertical = 4
+
+[node name="MiddleRow" type="HBoxContainer" parent="UI/MarginContainer/Rows"]
+layout_direction = 3
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BottomRow" type="HBoxContainer" parent="UI/MarginContainer/Rows"]
+layout_mode = 2
+
+[node name="Inventory" parent="UI" instance=ExtResource("7_xpajw")]
+offset_left = -290.0
+offset_top = -242.0
+offset_right = -60.0
+offset_bottom = 242.0
+size_flags_horizontal = 0
+
+[node name="PlayerPlacementInitializer" type="Node" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("11_ok7qi")
+player = NodePath("../Actors/Player")
+
+[node name="ItemManager" type="Node2D" parent="."]
+script = ExtResource("12_x1j8y")
+
+[node name="Debug" type="Node" parent="."]
+
+[node name="DebugInputListener" type="Node" parent="Debug"]
+script = ExtResource("13_o0ymo")
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Item" parent="Items" instance=ExtResource("12_u5mli")]
+position = Vector2(316, 319)
+
+[connection signal="instantiation_complete" from="Map" to="PlayerPlacementInitializer" method="_on_map_instantiation_complete"]
+[connection signal="velocity_computed" from="Actors/NPCs/Bunny/NPCNavigator" to="Actors/NPCs/Bunny" method="_on_npc_navigator_velocity_computed"]
+[connection signal="timeout" from="Actors/NPCs/Bunny/NPCNavigator/path_recalculation_timer" to="Actors/NPCs/Bunny/NPCNavigator" method="_on_recalculation_timer_timeout"]
+
+[editable path="Map"]
+[editable path="Actors/Player"]
+[editable path="Actors/NPCs/Bunny"]
+[editable path="UI/MarginContainer/Rows/TopRow/ClockContainer"]
+[editable path="UI/Inventory"]

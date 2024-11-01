@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bsk2tl8lqc5rf"]
+
+[ext_resource type="Texture2D" uid="uid://df2xtfrsmnlxt" path="res://assets/sprites/stomach_bg.tres" id="2_1jqfg"]
+[ext_resource type="Texture2D" uid="uid://byvgb3ec352ht" path="res://assets/sprites/stomach_fill.tres" id="3_62mek"]
+[ext_resource type="LabelSettings" uid="uid://7qa7y0k1vpkl" path="res://ui/player_info_ui/money_ui_label_settings.tres" id="4_lateq"]
+
+[sub_resource type="GDScript" id="GDScript_mnpsu"]
+script/source = "class_name HungerUI extends HSplitContainer
+
+@onready var percentage_label : Label = $HungerPercentage
+@onready var hunger_icon : TextureProgressBar = $HungerIcon
+
+func _ready():
+"
+
+[node name="Hunger" type="HSplitContainer"]
+offset_right = 54.0
+offset_bottom = 32.0
+script = SubResource("GDScript_mnpsu")
+
+[node name="HungerIcon" type="TextureProgressBar" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+value = 100.0
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = ExtResource("2_1jqfg")
+texture_progress = ExtResource("3_62mek")
+
+[node name="HungerPercentage" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+text = "0"
+label_settings = ExtResource("4_lateq")
+vertical_alignment = 1

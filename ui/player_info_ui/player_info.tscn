@@ -1,0 +1,81 @@
+[gd_scene load_steps=9 format=3 uid="uid://cslsrrshjk2jh"]
+
+[ext_resource type="Script" path="res://ui/player_info_ui/player_info_ui.gd" id="1_6i6gi"]
+[ext_resource type="Theme" uid="uid://cmhy6gb7fn1i8" path="res://ui/player_info_ui/health_bar_theme.tres" id="1_s0sd0"]
+[ext_resource type="Texture2D" uid="uid://brmoasc414upt" path="res://assets/sprites/health.png" id="3_scsx0"]
+[ext_resource type="Texture2D" uid="uid://deatcnmfphd8x" path="res://assets/sprites/coin.png" id="5_iq1bm"]
+[ext_resource type="LabelSettings" uid="uid://7qa7y0k1vpkl" path="res://ui/player_info_ui/money_ui_label_settings.tres" id="6_ibof3"]
+[ext_resource type="Texture2D" uid="uid://df2xtfrsmnlxt" path="res://assets/sprites/stomach_bg.tres" id="8_qb8qk"]
+[ext_resource type="Texture2D" uid="uid://byvgb3ec352ht" path="res://assets/sprites/stomach_fill.tres" id="9_0a20c"]
+[ext_resource type="Script" path="res://ui/control_modulator.gd" id="11_wwaq0"]
+
+[node name="PlayerInfoContainer" type="VBoxContainer"]
+offset_right = 1920.0
+offset_bottom = 3845.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_6i6gi")
+
+[node name="Health" type="HSplitContainer" parent="."]
+layout_mode = 2
+theme = ExtResource("1_s0sd0")
+
+[node name="HeartIcon" type="TextureRect" parent="Health"]
+layout_mode = 2
+texture = ExtResource("3_scsx0")
+stretch_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="Health"]
+layout_mode = 2
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HealthBar" type="ProgressBar" parent="Health/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+theme = ExtResource("1_s0sd0")
+theme_type_variation = &"HealthBar"
+show_percentage = false
+
+[node name="Money" type="HSplitContainer" parent="."]
+layout_mode = 2
+dragger_visibility = 1
+
+[node name="CoinIcon" type="TextureRect" parent="Money"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_iq1bm")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="MoneyAmount" type="Label" parent="Money"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "0"
+label_settings = ExtResource("6_ibof3")
+vertical_alignment = 1
+
+[node name="Hunger" type="HSplitContainer" parent="."]
+layout_mode = 2
+dragger_visibility = 1
+
+[node name="HungerIcon" type="TextureProgressBar" parent="Hunger"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+value = 100.0
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = ExtResource("8_qb8qk")
+texture_progress = ExtResource("9_0a20c")
+
+[node name="HungerPercentage" type="Label" parent="Hunger"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "0"
+label_settings = ExtResource("6_ibof3")
+vertical_alignment = 1
+
+[node name="Modulator" type="Node" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("11_wwaq0")
+target = NodePath("..")

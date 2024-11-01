@@ -1,0 +1,59 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0u5neqbvrjm5"]
+
+[ext_resource type="Theme" uid="uid://chthld6pr5srw" path="res://ui/inventory_ui/inventory.tres" id="1_njp5d"]
+[ext_resource type="PackedScene" uid="uid://c0rglm6gdou6n" path="res://ui/inventory_ui/inventory_cell.tscn" id="2_pjhu0"]
+
+[node name="QuickBar" type="Control"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="QuickBarPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -100.0
+offset_right = 210.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="QuickBarPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InventorySlots" type="GridContainer" parent="QuickBarPanel/CenterContainer"]
+layout_direction = 2
+layout_mode = 2
+theme = ExtResource("1_njp5d")
+columns = 6
+
+[node name="InventorySlot" parent="QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("2_pjhu0")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("2_pjhu0")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("2_pjhu0")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("2_pjhu0")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("2_pjhu0")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="QuickBarPanel/CenterContainer/InventorySlots" instance=ExtResource("2_pjhu0")]
+layout_mode = 2
